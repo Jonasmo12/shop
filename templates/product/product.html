@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block scripts %}
+    <script src="{% static 'app.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+
+{% endblock title %}
+{% block content %}
+
+{% include '_navBar.html' %}
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <div class="row p-3">
+                <img src="{{ product.image.url }}" height="250" />
+            </div>
+        </div>
+
+        <div class="col"> 
+            <div class="row p-3">
+                <h4>{{ product.title }}</h4>
+                <p class="fw-bold">R {{ product.price }}</p>
+                <p>{{ product.description }}</p>
+                <div class="col-6">
+                    <label for="select" >Quantity: </label>
+                    <select id="select" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="text-start mt-3">
+<button type="button" id="add-button" value="{{product.id}}" class="btn btn-secondary btn-sm">Add to basket</button></div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col p-3">
+            <a class="fw-light" href="{% url 'shop:shop' shop_slug=product.shop.slug %}">{{ product.shop }}</a>
+        </div>
+    </div>
+</div>
+
+<script defer>
+    const addButton = document.getElementById('add-button')
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    
+
+    $(document).on('click', '#add-button', function (e) {
+        e.preventDefault();
+        
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_add" %}',
+            data: {
+                product_id: $('#add-button').val(),
+                product_quantity: $('#select option:selected').text(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function (json) {
+               document.getElementById("cart-quantity").innerHTML = json.quantity
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    })
+</script>
+
+{% endblock %}

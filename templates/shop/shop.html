@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block scripts %}
+    <script src="{% static 'app.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+
+{{ shop.name }}
+
+{% endblock title %}
+{% block content %}
+
+{% include '_navBar.html' %}
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <div class="col-lg-12">
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        {% for product in products %}
+        <div class="col-lg-3">
+            <div class="card">
+                <img src="{{ product.image.url }}" class="card-img-top" height="250" alt="...">
+                <div class="card-body">
+                  <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><h5 class="card-title fw-normal">{{ product.title }}</h5></a>
+                  <p class="card-text fw-light">{{ product.description }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item fw-bold">R {{ product.price }}</li>
+                  <!-- <li class="list-group-item">A second item</li>
+                  <li class="list-group-item">A third item</li> -->
+                </ul>
+                
+              </div>
+            
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .bg-image {
+        background: gray center center no-repeat;
+        background-size: cover;
+        position: relative;
+        height: 45vh;
+    }
+</style>
+{% endblock %}

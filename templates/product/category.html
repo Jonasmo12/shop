@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block scripts %}
+    <script src="{% static 'app.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+
+product
+
+{% endblock title %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>{{ product.title }}</h1>
+            <h4>{{ product.price }}</h4>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="{% url 'shop:shop' shop_slug=product.shop.slug %}">{{ product.shop }}</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
