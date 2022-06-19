@@ -14,7 +14,7 @@ class Order(models.Model):
     post_code = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    total_paid = models.DecimalField(max_digits=5, decimal_places=2)
+    total_paid = models.FloatField(null=True)
     order_id = models.CharField(max_length=200)
     complete = models.BooleanField(default=False)
 
@@ -32,7 +32,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product,
                                 related_name='order_items',
                                 on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.FloatField(null=True)
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):

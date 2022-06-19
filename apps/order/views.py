@@ -43,14 +43,14 @@ def add(request):
                 city='',
                 phone='',
                 email='',
-                total_paid=cart_total,
+                total_paid=1222.48,
                 complete=True
             )
-            order_id = order.pk
+            order_id = order
 
             for item in cart:
                 OrderItem.objects.create(
-                    order_id=order_id, 
+                    order=order_id, 
                     product=item['product'], 
                     price=item['price'], 
                     quantity=item['quantity']
