@@ -4,9 +4,6 @@ from ..product.models import Product
 
 
 class Order(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default="", null=True
-    )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True)
     address1 = models.CharField(max_length=250)
