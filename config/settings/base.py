@@ -127,3 +127,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # sessions
 CART_SESSION_ID = 'cart'
+
+# Yoco Key
+YOCO_SECRET_KEY = 'sk_test_9de4a4c37LokWZR7ac54e93a9b73'

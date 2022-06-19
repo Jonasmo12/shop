@@ -1,7 +1,8 @@
 import json
-
-#import stripe
+from django.conf import settings
+import requests
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -28,35 +29,47 @@ def CartView(request):
     total = str(cart.get_total_price())
     total = total.replace('.', '')
     total = int(total)
+    print('1-------2')
+    print(total)
 
-    # stripe.api_key = ''
-    # intent = stripe.PaymentIntent.create(
-    #     amount=total,
-    #     currency='gbp',
-    #     metadata={'userid': request.user.id}
-    # )
+    if request.method == 'POST':
+        response = requests.POST(
+            'https://online.yoco.com/v1/charges/',
+            headers={
+                'X-Auth-Secret-Key': settings.YOCO_SECRET_KEY,
+            },
+            json={
+                'token': 'tok_test_DjaqoUgmzwYkwesr3euMxyUV4g',
+                'amountInCents': total,
+                'currency': 'ZAR',
+            },
+        )
+        print("--------")
+        print(response.json())
+        print("--------")
+        return JsonResponse({'response': response})
+    print(123)
+    return render(request, 'payment/payment.html')
 
-    return render(request, 'payment/payment.html', {})
 
+# @csrf_exempt
+# def stripe_webhook(request):
+#     # payload = request.body
+#     # event = None
 
-@csrf_exempt
-def stripe_webhook(request):
-    # payload = request.body
-    # event = None
+#     # try:
+#     #     event = stripe.Event.construct_from(
+#     #         json.loads(payload), stripe.api_key
+#     #     )
+#     # except ValueError as e:
+#     #     print(e)
+#     #     return HttpResponse(status=400)
 
-    # try:
-    #     event = stripe.Event.construct_from(
-    #         json.loads(payload), stripe.api_key
-    #     )
-    # except ValueError as e:
-    #     print(e)
-    #     return HttpResponse(status=400)
+#     # # Handle the event
+#     # if event.type == 'payment_intent.succeeded':
+#     #     payment_confirmation(event.data.object.client_secret)
 
-    # # Handle the event
-    # if event.type == 'payment_intent.succeeded':
-    #     payment_confirmation(event.data.object.client_secret)
+#     # else:
+#     #     print('Unhandled event type {}'.format(event.type))
 
-    # else:
-    #     print('Unhandled event type {}'.format(event.type))
-
-    return HttpResponse(status=200)
+#     return HttpResponse(status=200)

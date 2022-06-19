@@ -1,91 +1,137 @@
 //'use strict';
-
-
-var stripe = Stripe('');
-
-var elem = document.getElementById('submit');
-clientsecret = elem.getAttribute('data-secret');
-
-// Set up Stripe.js and Elements to use in checkout form
-var elements = stripe.elements();
-var style = {
-base: {
-    color: "#000",
-    lineHeight: '2.4',
-    fontSize: '16px'
-}
-};
-
-
-var card = elements.create("card", { style: style });
-card.mount("#card-element");
-
-card.on('change', function(event) {
-var displayError = document.getElementById('card-errors')
-if (event.error) {
-  displayError.textContent = event.error.message;
-  $('#card-errors').addClass('alert alert-info');
-} else {
-  displayError.textContent = '';
-  $('#card-errors').removeClass('alert alert-info');
-}
-});
-
-var form = document.getElementById('payment-form');
-
-form.addEventListener('submit', function(ev) {
-ev.preventDefault();
-
-var custName = document.getElementById("custName").value;
-var custAdd = document.getElementById("custAdd").value;
-var custAdd2 = document.getElementById("custAdd2").value;
-var postCode = document.getElementById("postCode").value;
-
-const payment_url = document.location.href
+var payment_url = document.location.href
 console.log('payment url: ', payment_url)
 
+// function getCookie(name) {
+//   let cookieValue = null;
+//   if (document.cookie && document.cookie !== "") {
+//     const cookies = document.cookie.split(";");
+//     for (let i = 0; i < cookies.length; i++) {
+//       const cookie = cookies[i].trim();
+//       // Does this cookie string begin with the name we want?
+//       if (cookie.substring(0, name.length + 1) === (name + "=")) {
+//         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//         break;
+//       }
+//     }
+//   }
+//   return cookieValue;
+// }
+
+// Replace the supplied `publicKey` with your own.
+// Ensure that in production you use a production public_key.
+var sdk = new window.YocoSDK({
+  publicKey: 'pk_test_eacbf366AVOLmKo62094'
+});
+
+console.log(cartTotal)
+
+// Create a new dropin form instance
+var inline = sdk.inline({
+  layout: 'field',
+  amountInCents: cartTotal,
+  currency: 'ZAR',
+});
+// this ID matches the id of the element we created earlier.
+inline.mount('#card-frame');
+
+
+// Run our code when your form is submitted
+var form = document.getElementById('payment-form');
+var submitButton = document.getElementById('pay-button');
+form.addEventListener('submit', function (event) {
+  event.preventDefault()
+  // Disable the button to prevent multiple clicks while processing
+  submitButton.disabled = true;
+  // This is the inline object we created earlier with the sdk
+  inline.createToken().then(function (result) {
+    // Re-enable button now that request is complete
+    // (i.e. on success, on error and when auth is cancelled)
+    submitButton.disabled = false;
+    if (result.error) {
+      const errorMessage = result.error.message;
+      errorMessage && alert("error occured: " + errorMessage);
+    } else {
+      const token = result;
+      alert("card successfully tokenised: " + token.id);
+    }
+  }).catch(function (error) {
+    // Re-enable button now that request is complete
+    submitButton.disabled = false;
+    alert("error occured: " + error);
+  });
+});
+// Any additional form data you want to submit to your backend should be done here, or in another event listener
+
+
+
+inline.on('card_tokenized', function (event) {
+  // Code to handle the event goes here
+  console.log('post to backend');
+  console.log('token_id:', event.id)
+
   $.ajax({
-    type: "POST",
-    url: `${payment_url}/order/add`,
+    type: 'POST',
+    url: order_url,
+    dataType: 'json',
     data: {
-      order_key: clientsecret,
+      order_key: 123456789,
+      token_id: event.id,
       csrfmiddlewaretoken: CSRF_TOKEN,
       action: "post",
     },
     success: function (json) {
       console.log(json.success)
-
-      stripe.confirmCardPayment(clientsecret, {
-        payment_method: {
-          card: card,
-          billing_details: {
-            address:{
-                line1:custAdd,
-                line2:custAdd2
-            },
-            name: custName
-          },
-        }
-      }).then(function(result) {
-        if (result.error) {
-          console.log('payment error')
-          console.log(result.error.message);
-        } else {
-          if (result.paymentIntent.status === 'succeeded') {
-            console.log('payment processed')
-            // There's a risk of the customer closing the window before callback
-            // execution. Set up a webhook or plugin to listen for the
-            // payment_intent.succeeded event that handles any business critical
-            // post-payment actions.
-            window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
-          }
-        }
-      });
-
+      window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
     },
     error: function (xhr, errmsg, err) {},
-  });
-
-
-
+  })
 });
+
+// form.addEventListener('submit', function (event) {
+//   event.preventDefault()
+  
+//   $.ajax({
+//     type: "POST",
+//     url: 'http://127.0.0.1/order/add',
+//     data: {
+//       csrfmiddlewaretoken: CSRF_TOKEN,
+//       action: "post",
+//     },
+//     success: function (json) {
+//       console.log(json.success)
+  
+//       // stripe.confirmCardPayment(clientsecret, {
+//       //   payment_method: {
+//       //     card: card,
+//       //     billing_details: {
+//       //       address:{
+//       //           line1:custAdd,
+//       //           line2:custAdd2
+//       //       },
+//       //       name: custName
+//       //     },
+//       //   }
+//       // }).then(function(result) {
+//       //   if (result.error) {
+//       //     console.log('payment error')
+//       //     console.log(result.error.message);
+//       //   } else {
+//       //     if (result.paymentIntent.status === 'succeeded') {
+//       //       console.log('payment processed')
+//       //       // There's a risk of the customer closing the window before callback
+//       //       // execution. Set up a webhook or plugin to listen for the
+//       //       // payment_intent.succeeded event that handles any business critical
+//       //       // post-payment actions.
+//       //       window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
+//       //     }
+//       //   }
+//       // });
+  
+//     },
+//     error: function (xhr, errmsg, err) {},
+//   });
+  
+// })
+
+
