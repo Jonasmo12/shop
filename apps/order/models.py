@@ -10,6 +10,7 @@ class Order(models.Model):
     address2 = models.CharField(max_length=250, blank=True)
     city = models.CharField(max_length=100)
     phone = models.CharField(max_length=10)
+    email = models.EmailField(null=True)
     post_code = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

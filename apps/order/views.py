@@ -9,13 +9,10 @@ import requests
 def add(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
-        order_key = request.POST.get('order_key')
         token_id = request.POST.get('token_id')
-        print(order_key)
-        # cart_total = cart.get_total_price()
-        total = str(cart.get_total_price())
-        total = total.replace('.', '')
-        total = int(total)
+        cart_total = str(cart.get_total_price())
+        cart_total = cart_total.replace('.', '')
+        cart_total = int(cart_total)
 
         response = requests.post(
             'https://online.yoco.com/v1/charges/',
@@ -24,7 +21,7 @@ def add(request):
             },
             json={
                 'token': token_id,
-                'amountInCents': total,
+                'amountInCents': cart_total,
                 'currency': 'ZAR',
             },
         )
@@ -32,15 +29,32 @@ def add(request):
         print(response.json())
         print("--------")
 
-        # # Check if order exists
-        # if Order.objects.filter(order_key=order_key).exists():
-        #     pass
-        # else:
-        #     order = Order.objects.create()
-        #     order_id = order.pk
+        # Check if order exists
+        if Order.objects.filter(order_id=token_id).exists():
+            pass
+        else:
+            order = Order.objects.create(
+                order_id=token_id,
+                first_name='',
+                last_name='',
+                address1='',
+                address2='',
+                post_code='',
+                city='',
+                phone='',
+                email='',
+                total_paid=cart_total,
+                complete=True
+            )
+            order_id = order.pk
 
-        #     for item in cart:
-        #         OrderItem.objects.create(order_id=order_id, product=item['product'], price=item['price'], quantity=item['qty'])
+            for item in cart:
+                OrderItem.objects.create(
+                    order_id=order_id, 
+                    product=item['product'], 
+                    price=item['price'], 
+                    quantity=item['quantity']
+                )
 
         response = JsonResponse({'success': 'Return something'})
         return response
