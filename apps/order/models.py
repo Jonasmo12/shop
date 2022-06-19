@@ -7,7 +7,8 @@ class Order(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default="", null=True
     )
-    full_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50, null=True)
     address1 = models.CharField(max_length=250)
     address2 = models.CharField(max_length=250, blank=True)
     city = models.CharField(max_length=100)
@@ -16,7 +17,7 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     total_paid = models.DecimalField(max_digits=5, decimal_places=2)
-    order_key = models.CharField(max_length=200)
+    order_id = models.CharField(max_length=200)
     billing_status = models.BooleanField(default=False)
 
     class Meta:
