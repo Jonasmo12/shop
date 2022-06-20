@@ -1,12 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+import requests
 from django.conf import settings
 from django.http import JsonResponse
 from ..cart.cart import Cart
 from .models import Order, OrderItem
-import requests
+from ..shop.models import Shop
+
 # Create your views here.
 
-def add(request):
+def add(request, shop_slug):
+    # shop = get_object_or_404(
+    #     Shop, slug=shop_slug, active=True
+    # )
+    # print(shop)
     cart = Cart(request)
     if request.POST.get('action') == 'post':
         token_id = request.POST.get('token_id')
@@ -43,7 +49,7 @@ def add(request):
                 city='',
                 phone='',
                 email='',
-                total_paid=1222.48,
+                total_paid=cart.get_total_price(),
                 complete=True
             )
             order_id = order

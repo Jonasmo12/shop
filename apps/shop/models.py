@@ -11,7 +11,9 @@ class Shop(models.Model):
     )
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField()
-    background_image = models.ImageField(upload_to="bg-images/", default="media/bg-images/default.jpg")
+    background_image = models.ImageField(
+        upload_to="bg-images/", default="media/bg-images/default.jpg"
+    )
     description = models.TextField(default="")
     tag_line = models.CharField(max_length=255, default="")
     active = models.BooleanField(default=False)

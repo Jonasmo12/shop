@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from ..product.models import Product
+from ..shop.models import Shop
 
 
 class Order(models.Model):
@@ -17,6 +18,9 @@ class Order(models.Model):
     total_paid = models.FloatField(null=True)
     order_id = models.CharField(max_length=200)
     complete = models.BooleanField(default=False)
+    shop = models.ForeignKey(
+        Shop, on_delete=models.SET_NULL, null=True
+    )
 
     class Meta:
         ordering = ('-created',)
