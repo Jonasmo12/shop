@@ -4,91 +4,114 @@
 {% block content %}
 
 {% include '_navBar.html' %}
-
-<main class="pt-5">
-  <div class="container" style="max-width: 1000px">
-    <div class="col-12">
-      <p class="fw-bold">Cart Summary</p>
-    </div>
-    <div class="col-12">
-      <p class="fw-light">Manage <b>items</b> in your cart</p>
-    </div>
-    <hr />
-  </div>
-  <div class="container" style="max-width: 1000px">
-    
-    <div class="row g-3">
-      <div class="col-12 bg-light p-3 d-flex justify-content-between">
-        <div class="d-flex d-flex-inline">
-          <div class="pe-3">Order</div>
-          <div class="dropdown">
-          <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link" id="dropdownLink" data-bs-toggle="dropdown" aria-expanded="false">
-          Shipping options
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-          </svg>
-          </a>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownLink">
-            <li class="item small">Next day delivery</li>
-            <li class="item small">Premimum delivery</li>
-          </ul>
-          </div>
-        </div>
-        <div class="text-end">
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Cart Summary
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <div class="row g-3">
+                <div class="col-lg-12">
           
-          <div class="">Sub Total: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
-          <div id="">Shipping <span class="small">(Next day delivery)</span>: <span class="fw-bold">£11.50</span></div>
-          <div class="pt-2">Total to pay: <span class="fw-bold h5">R </span><span id="total_price" class="fw-bold h5">{{cart.get_total_price}}</span></div>
+                  {% for item in cart %} 
+                  {% with product=item.product %}
           
-        </div>
-      </div>
-      <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
-        <div class="d-grid gap-2 ">
-          <a role="button" href="{% url 'payment:cart' %}" class="btn btn-success fw-bold" type="button">Checkout</a>
-          <button class="btn btn-light" type="button">Save for later</button>
-        </div>
-      </div>
-      <div class="col-md-7 col-lg-8 p-0">
+                  <div class="card mb-3 border-0 product-item" data-index="{{product.id}}">
+                    <div class="row g-0">
+                      <div class="col-md-2 d-none d-md-block">
+                        <img class="img-fluid mx-auto d-block" alt="Responsive image"
+                            src="{{ product.image.url }}" height="50px" width="50px"/>
+                      </div>
+                      <div class="col-md-10 ps-md-3">
+                        <div class="card-body p-1">
+                          <a class="text-decoration-none text-reset" href="{{item.shop.product.get_absolute_url}}">
+                            <p class="card-text pb-3">{{product.title}}</p>
+                          </a>
+                              <label for="select">Quantity</label>
+                              <select id="select{{product.id}}" style="width:50px;height:31px;">
+                                <option value="" selected disabled hidden>{{item.quantity}}</option>
+                                <option value="">1</option>
+                                <option value="">2</option>
+                                <option value="">3</option>
+                                <option value="">4</option>
+                              </select>
+                          <a type="button" id="update-button" data-index="{{product.id}}" class="update-button text-decoration-none small ps-3">Update</a>
+                          <a type="button" id="delete-button" data-index="{{product.id}}" class="delete-button text-decoration-none small">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endwith %} 
+                  {% endfor %}
+                </div>
 
-        {% for item in cart %} 
-        {% with product=item.product %}
-
-        <div class="card mb-3 border-0 product-item" data-index="{{product.id}}">
-          <div class="row g-0">
-            <div class="col-md-2 d-none d-md-block">
-              <img class="img-fluid mx-auto d-block" alt="Responsive image"
-                  src="{{ product.image.url }}" />
-            </div>
-            <div class="col-md-10 ps-md-3">
-              <div class="card-body p-1">
-                <a class="text-decoration-none text-reset" href="{{item.shop.product.get_absolute_url}}">
-                  <p class="card-text pb-3">{{product.title}}</p>
-                </a>
-                    <label for="select">Quantity</label>
-                    <select id="select{{product.id}}" style="width:50px;height:31px;">
-                      <option value="" selected disabled hidden>{{item.quantity}}</option>
-                      <option value="">1</option>
-                      <option value="">2</option>
-                      <option value="">3</option>
-                      <option value="">4</option>
-                    </select>
-                <a type="button" id="update-button" data-index="{{product.id}}" class="update-button text-decoration-none small ps-3">Update</a>
-                <a type="button" id="delete-button" data-index="{{product.id}}" class="delete-button text-decoration-none small">Delete</a>
+                <div class="col-lg-12 text-end">
+                    
+                  <div class="">Sub Total: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
+            
+                  <div class="pt-2">Total to pay: <span class="fw-bold h5">R </span><span id="total_price" class="fw-bold h5">{{cart.get_total_price}}</span></div>
+                  
+                </div>
+              </div>
+              <!-- <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
+                <div class="d-grid gap-2 ">
+                  <a role="button" href="{% url 'payment:cart' %}" class="btn btn-success fw-bold" type="button">Checkout</a>
+                  <button class="btn btn-light" type="button">Save for later</button>
+                </div>
+              </div> -->
               </div>
             </div>
           </div>
         </div>
-        {% endwith %} 
-        {% endfor %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Checkout
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <form id="payment-form" method="POST">
+                <div class="one-liner">
+                  <div id="card-frame">
+                    <!-- Yoco Inline form will be added here -->
+                  </div>
+                  <br>
+                  <button class="btn btn-md btn-primary" id="pay-button">
+                    Pay
+                  </button>
+                </div>
+                <p class="success-payment-message"></p>
+              </form>
+                    
+          </div>
+        </div>
       </div>
     </div>
-    
   </div>
-</main>
+</div>
+
 
 <script>
-  // Delete Item
+  // {% comment %} Make csrf token availble in JS files {% endcomment %}
+    var CSRF_TOKEN = '{{ csrf_token }}';
+    var cartTotal = '{{ cart.get_total_price}}';
+    var cartTotal = cartTotal.toString();
+    var cartTotal = cartTotal.replace('.', '');
+    var cartTotal = parseInt(cartTotal)
+    var shopInstace = '{{ cart.product.shop }}';
+    console.log(shopInstace)
+
+    var order_url = "{% url 'order:add' %}";
+  
+  
+    // Delete Item
   $(document).on('click', '.delete-button', function (e) {
     e.preventDefault();
     var prodid = $(this).data('index');
@@ -135,4 +158,5 @@
   })
 </script>
 
+<script src="{% static 'payment.js' %}" data-rel-js></script>
 {% endblock %}

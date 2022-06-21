@@ -26,29 +26,9 @@ class Error(TemplateView):
 def CartView(request):
 
     cart = Cart(request)
-    total = str(cart.get_total_price())
-    total = total.replace('.', '')
-    total = int(total)
-    print('1-------2')
-    print(total)
-
-    if request.method == 'POST':
-        response = requests.POST(
-            'https://online.yoco.com/v1/charges/',
-            headers={
-                'X-Auth-Secret-Key': settings.YOCO_SECRET_KEY,
-            },
-            json={
-                'token': 'tok_test_DjaqoUgmzwYkwesr3euMxyUV4g',
-                'amountInCents': total,
-                'currency': 'ZAR',
-            },
-        )
-        print("--------")
-        print(response.json())
-        print("--------")
-        return JsonResponse({'response': response})
-    print(123)
+    # total = str(cart.get_total_price())
+    # total = total.replace('.', '')
+    # total = int(total)
     return render(request, 'payment/payment.html')
 
 

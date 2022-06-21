@@ -13,7 +13,6 @@
     <div class="col">
       <div class="mt-5">
         <form id="payment-form" method="POST">
-          
           <div class="one-liner">
             <div id="card-frame">
               <!-- Yoco Inline form will be added here -->
@@ -38,10 +37,12 @@
     var cartTotal = cartTotal.toString();
     var cartTotal = cartTotal.replace('.', '');
     var cartTotal = parseInt(cartTotal)
+    var shopInstace = '{{ cart.product.shop }}';
+    console.log(shopInstace)
 
     var order_url = "{% url 'order:add' %}";
 </script>
-<!-- <script src="https://js.stripe.com/v3/"></script> -->
+
 <script src="{% static 'payment.js' %}" data-rel-js></script>
 
 {% endblock %}

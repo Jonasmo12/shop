@@ -28,7 +28,7 @@ console.log(cartTotal)
 
 // Create a new dropin form instance
 var inline = sdk.inline({
-  layout: 'field',
+  layout: 'basic',
   amountInCents: cartTotal,
   currency: 'ZAR',
 });
