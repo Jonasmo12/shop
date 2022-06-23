@@ -3,93 +3,156 @@
 {% block title %}Cart Summary{% endblock %}
 {% block content %}
 
+<style>
+  .custom_select {
+    width: 70px !important;
+    height: 30px;
+    border-radius: 10%;
+  }
+</style>
+
+
 {% include '_navBar.html' %}
 <div class="container mt-5">
   <div class="row">
     <div class="col-lg-12">
-      <div class="accordion" id="accordionExample">
+      <div class="accordion accordion-flush" id="accordionFlushExample">
         <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              Cart Summary
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+              Shopping Cart Summary.
             </button>
           </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
-              <div class="row g-3">
-                <div class="col-lg-12">
-          
-                  {% for item in cart %} 
-                  {% with product=item.product %}
-          
-                  <div class="card mb-3 border-0 product-item" data-index="{{product.id}}">
-                    <div class="row g-0">
-                      <div class="col-md-2 d-none d-md-block">
-                        <img class="img-fluid mx-auto d-block" alt="Responsive image"
-                            src="{{ product.image.url }}" height="50px" width="50px"/>
-                      </div>
-                      <div class="col-md-10 ps-md-3">
-                        <div class="card-body p-1">
-                          <a class="text-decoration-none text-reset" href="{{item.shop.product.get_absolute_url}}">
-                            <p class="card-text pb-3">{{product.title}}</p>
-                          </a>
-                              <label for="select">Quantity</label>
-                              <select id="select{{product.id}}" style="width:50px;height:31px;">
-                                <option value="" selected disabled hidden>{{item.quantity}}</option>
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4</option>
-                              </select>
-                          <a type="button" id="update-button" data-index="{{product.id}}" class="update-button text-decoration-none small ps-3">Update</a>
-                          <a type="button" id="delete-button" data-index="{{product.id}}" class="delete-button text-decoration-none small">Delete</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {% endwith %} 
-                  {% endfor %}
-                </div>
+              
 
-                <div class="col-lg-12 text-end">
-                    
-                  <div class="">Sub Total: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
-            
-                  <div class="pt-2">Total to pay: <span class="fw-bold h5">R </span><span id="total_price" class="fw-bold h5">{{cart.get_total_price}}</span></div>
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Product</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Quantity</th>
+                          <th scope="col">Price</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in cart %} 
+                        {% with product=item.product %}
+                        <tr>
+                          <td>{{product.title}}</td>
+                          <td>{{ product.description }}</td>
+                          <td>
+                            <select class="custom_select" id="select{{product.id}}">
+                              <option value="" selected disabled hidden>{{item.quantity}}</option>
+                              <option value="">1</option>
+                              <option value="">2</option>
+                              <option value="">3</option>
+                              <option value="">4</option>
+                            </select>
+                            <a type="button" id="update-button" data-index="{{product.id}}" class="update-button text-decoration-none small">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                              </svg>
+                            </a>
+                          </td>
+                          <td>R {{ product.price }}</td>
+                          <td>
+                            
+                            <a type="button" id="delete-button" data-index="{{product.id}}" class="delete-button text-decoration-none small">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                              </svg>
+                            </a>
+                          </td>
+                        </tr>
+                        {% endwith %} 
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+          
                   
-                </div>
-              </div>
-              <!-- <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
-                <div class="d-grid gap-2 ">
-                  <a role="button" href="{% url 'payment:cart' %}" class="btn btn-success fw-bold" type="button">Checkout</a>
-                  <button class="btn btn-light" type="button">Save for later</button>
-                </div>
-              </div> -->
-              </div>
+                  
+                  <div class="col-lg-12 text-end">
+                    
+                    <div class="">Sub Total: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
+              
+                    <div class="pt-2">Total to pay: <span class="fw-bold h5">R </span><span id="total_price" class="fw-bold h5">{{cart.get_total_price}}</span></div>
+                    
+                  </div>
             </div>
           </div>
         </div>
         <div class="accordion-item">
-          <h2 class="accordion-header" id="headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Checkout
+          <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+              Checkout.
             </button>
           </h2>
-          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
-              <form id="payment-form" method="POST">
-                <div class="one-liner">
+              <form id="payment-form mt-5" method="POST" class="row g-3">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                </div>
+                <div class="col-md-6">
+                  <label for="inputEmail4" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="inputEmail4">
+                </div>
+                <div class="col-md-6">
+                  <label for="inputPassword4" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="inputPassword4">
+                </div>
+                <div class="col-12">
+                  <label for="inputAddress" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                </div>
+                <div class="col-12">
+                  <label for="inputAddress2" class="form-label">Address 2</label>
+                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                </div>
+                <div class="col-md-6">
+                  <label for="inputCity" class="form-label">City</label>
+                  <input type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="col-md-4">
+                  <label for="inputState" class="form-label">State</label>
+                  <select id="inputState" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label for="inputZip" class="form-label">Zip</label>
+                  <input type="text" class="form-control" id="inputZip">
+                </div>
+                
+              
+                <div class="col-md-6 one-liner mt-5">
+                  <p class="">Card Information.</p>
                   <div id="card-frame">
                     <!-- Yoco Inline form will be added here -->
                   </div>
                   <br>
-                  <button class="btn btn-md btn-primary" id="pay-button">
-                    Pay
+                  <button class="btn btn-lg btn-primary" id="pay-button">
+                    Pay <span id="price_confirmation">R{{cart.get_total_price}}</span>
                   </button>
                 </div>
                 <p class="success-payment-message"></p>
               </form>
                     
+            </div>
           </div>
         </div>
       </div>
@@ -151,6 +214,7 @@
         document.getElementById("cart-quantity").innerHTML = json.cart_quantity
         document.getElementById("subtotal").innerHTML = json.subtotal
         document.getElementById("total_price").innerHTML = json.total_price
+        document.getElementById("price_confirmation").innerHTML = json.total_price
 
       },
       error: function (xhr, errmsg, err) {}
