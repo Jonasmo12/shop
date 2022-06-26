@@ -12,18 +12,59 @@
   <div class="row">
     <div class="col">
       <div class="mt-5">
-        <form id="payment-form" method="POST">
-          <div class="one-liner">
-            <div id="card-frame">
-              <!-- Yoco Inline form will be added here -->
-            </div>
-            <br>
-            <button class="btn btn-md btn-primary" id="pay-button">
-              Pay
-            </button>
-          </div>
-          <p class="success-payment-message"></p>
-        </form>
+        <form id="payment-form mt-5" method="POST" class="row g-3">
+          {% csrf_token %}
+                <div class="col-md-6">
+                  <label for="firstName" class="form-label">First Name:</label>
+                  <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                </div>
+                <div class="col-md-6">
+                  <label for="flastName" class="form-label">First Name:</label>
+                  <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email">
+                </div>
+                <div class="col-md-6">
+                  <label for="tel" class="form-label">Password</label>
+                  <input type="tel" class="form-control" id="tel">
+                </div>
+                <div class="col-12">
+                  <label for="inputAddress" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                </div>
+                <div class="col-12">
+                  <label for="inputAddress2" class="form-label">Address 2</label>
+                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                </div>
+                <div class="col-md-6">
+                  <label for="inputCity" class="form-label">City</label>
+                  <input type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="col-md-4">
+                  <label for="inputState" class="form-label">State</label>
+                  <input type="text" class="form-control" id="inputState">
+                    
+                </div>
+                <div class="col-md-2">
+                  <label for="inputZip" class="form-label">Zip</label>
+                  <input type="text" class="form-control" id="inputZip">
+                </div>
+                
+              
+                <div class="col-md-6 one-liner mt-5">
+                  <p class="fw-bold">Card Information.</p>
+                  <div id="card-frame">
+                    <!-- Yoco Inline form will be added here -->
+                  </div>
+                  <br>
+                  <button class="btn btn-lg btn-primary" id="pay-button">
+                    Pay <span id="price_confirmation">R{{cart.get_total_price}}</span>
+                  </button>
+                </div>
+                <p class="success-payment-message"></p>
+              </form>
       </div>
     </div>
   </div>

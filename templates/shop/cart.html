@@ -4,186 +4,91 @@
 {% block content %}
 
 <style>
-  
-  .table>tbody>tr>td, .table>tfoot>tr>td{
-    vertical-align: middle;
+  .form-select {
+    display: inline-grid;
+    width: 100% !important;
   }
-@media screen and (max-width: 600px) {
-    table#cart tbody td .form-control{
-		width:20%;
-		display: inline !important;
-	}
-	.actions .btn{
-		width:36%;
-		margin:1.5em 0;
-	}
-	
-	.actions .btn-info{
-		float:left;
-	}
-	.actions .btn-danger{
-		float:right;
-	}
-	
-	table#cart thead { display: none; }
-	table#cart tbody td { display: block; padding: .6rem; min-width:320px;}
-	table#cart tbody tr td:first-child { background: #333; color: #fff; }
-	table#cart tbody td:before {
-		content: attr(data-th); font-weight: bold;
-		display: inline-block; width: 8rem;
-	}
-	
-	
-	
-	table#cart tfoot td{display:block; }
-	table#cart tfoot td .btn{display:block;}
-	
-}
+  .product:hover {
+    background-color: #D9D9D9;
+  }
+
+  .product-image {
+    margin-bottom: 1rem;
+  }
+
+  .product-description {
+    margin-top: 0rem !important;
+  }
 </style>
 
 
 {% include '_navBar.html' %}
 <div class="container mt-5">
   <div class="row">
-    <div class="col-lg-12">
-      <div class="accordion accordion-flush" id="accordionFlushExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingOne">
-            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-              Shopping Cart Summary.
-            </button>
-          </h2>
-          <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
-              
-
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    
-                    <table id="cart" class="table table-hover table-condensed">
-                      <thead>
-                      <tr>
-                        <th style="width:50%">Product</th>
-                        <th style="width:10%">Price</th>
-                        <th style="width:8%">Quantity</th>
-                        <th style="width:22%" class="text-center">Subtotal</th>
-                        <th style="width:10%"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for item in cart %} 
-                        {% with product=item.product %}
-                      <tr>
-                        
-                        <td data-th="Product">
-                          <div class="row">
-                            <div class="col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..." class="img-responsive"/></div>
-                            <div class="col-sm-10">
-                              <h4 class="nomargin">Product 1</h4>
-                              <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td data-th="Price">$1.99</td>
-                        <td data-th="Quantity">
-                          <input type="number" class="form-control text-center" value="1">
-                        </td>
-                        <td data-th="Subtotal" class="text-center">1.99</td>
-                        <td class="actions" data-th="">
-                          <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
-                          <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>								
-                        </td>
-                        
-                      </tr>
-                      {% endwith %}
-                      {% endfor %}
-                    </tbody>
-                    
-                  </table>
-
-                    
-                  </div>
-                </div>
-              </div>
-          
-                  
-                  <div class="container">
-                    <div class="row">
-                      <div class="col text-end">
-                        <div class="">Sub Total: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
-                        <div class="pt-2">Total to pay: <span class="fw-bold h5">R </span><span id="total_price" class="fw-bold h5">{{cart.get_total_price}}</span></div>
-                      </div>
-                  </div>
-                  </div>
-            </div>
+    <div class="col">
+      {% for item in cart %} 
+      {% with product=item.product %}
+        <div class="row product align-items-center">
+          <div class="col-lg-2 col-sm-6 clearfix product-image">
+            <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" height="150"/>
           </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingTwo">
-            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-              Checkout.
-            </button>
-          </h2>
-          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
-              <form id="payment-form mt-5" method="POST" class="row g-3">
-                <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="First name" aria-label="First name">
-                </div>
-                <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputEmail4" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="inputEmail4">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputPassword4" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="inputPassword4">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress" class="form-label">Address</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress2" class="form-label">Address 2</label>
-                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputCity" class="form-label">City</label>
-                  <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="col-md-4">
-                  <label for="inputState" class="form-label">State</label>
-                  <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                  </select>
-                </div>
-                <div class="col-md-2">
-                  <label for="inputZip" class="form-label">Zip</label>
-                  <input type="text" class="form-control" id="inputZip">
-                </div>
+          <div class="col-lg-4 col-sm-6-mt-2">
+            <p class="fw-bold mb-0">
+              <a href="{% url 'shop:product:product' shop_slug=product.shop.slug product_slug=product.slug %}">
+                {{ product.title }}
+              </a>
+            </p>
+            <p class="mb-1" style="font-size: 12px;">
+              <a data-bs-toggle="tooltip" data-bs-placement="right" title="Continue shopping" href="{% url 'shop:shop' shop_slug=product.shop.slug %}">
+                {{ product.shop }}
+              </a>
+            </p>
+            <p class="fw-light product-description" style="font-size: 12px;">
+              This is where the description of the product goes.
+            </p>
+          </div>
+
+          <div class="col col-lg-2 col-sm-6 text-center">
+            <select class="custom_select form-select" id="select{{product.id}}">
+              <option value="" selected disabled hidden>{{item.quantity}}</option>
+              <option value="">1</option>
+              <option value="">2</option>
+              <option value="">3</option>
+              <option value="">4</option>
+              <option value="">5</option>
+              <option value="">6</option>
+              <option value="">7</option>
+              <option value="">8</option>
+              <option value="">9</option>
+              <option value="">10</option>
+            </select>
+          </div>  
+            <div class="col col-lg-4 col-sm-6 text-center">
+              <a type="button" id="update-button" data-index="{{product.id}}" class="update-button text-decoration-none small btn btn-md btn-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                </svg>
                 
-              
-                <div class="col-md-6 one-liner mt-5">
-                  <p class="">Card Information.</p>
-                  <div id="card-frame">
-                    <!-- Yoco Inline form will be added here -->
-                  </div>
-                  <br>
-                  <button class="btn btn-lg btn-primary" id="pay-button">
-                    Pay <span id="price_confirmation">R{{cart.get_total_price}}</span>
-                  </button>
-                </div>
-                <p class="success-payment-message"></p>
-              </form>
-                    
-            </div>
+              </a>
+              <a type="button" id="delete-button" data-index="{{product.id}}" class="delete-button text-decoration-none small btn btn-md btn-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg>
+              </a>	
+            </div>	
           </div>
-        </div>
-      </div>
+    </div>
+                    
+        <hr>
+      {% endwith %}
+      {% endfor %}
+    <div class="col mb-3 text-end">
+      <div class="">Amount To Pay: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
+    </div>
+
+    <div class="col mb-5 text-end">
+      <a class="btn btn-md btn-primary" href="{% url 'payment:cart' %}">Checkout</a>
     </div>
   </div>
 </div>
@@ -193,11 +98,11 @@
   // {% comment %} Make csrf token availble in JS files {% endcomment %}
     var CSRF_TOKEN = '{{ csrf_token }}';
     var cartTotal = '{{ cart.get_total_price}}';
-    var cartTotal = cartTotal.toString();
-    var cartTotal = cartTotal.replace('.', '');
-    var cartTotal = parseInt(cartTotal)
-    var shopInstace = '{{ cart.product.shop }}';
-    console.log(shopInstace)
+    // var cartTotal = cartTotal.toString();
+    // var cartTotal = cartTotal.replace('.', '');
+    // var cartTotal = parseInt(cartTotal)
+    // var shopInstace = '{{ cart.product.shop }}';
+    // console.log(CSRF_TOKEN)
 
     var order_url = "{% url 'order:add' %}";
   
@@ -241,7 +146,6 @@
         console.log(json.subtotal)
         document.getElementById("cart-quantity").innerHTML = json.cart_quantity
         document.getElementById("subtotal").innerHTML = json.subtotal
-        document.getElementById("total_price").innerHTML = json.total_price
         document.getElementById("price_confirmation").innerHTML = json.total_price
 
       },
@@ -250,5 +154,5 @@
   })
 </script>
 
-<script src="{% static 'payment.js' %}" data-rel-js></script>
+<!-- <script src="{% static 'payment.js' %}" data-rel-js></script> -->
 {% endblock %}

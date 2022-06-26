@@ -2,6 +2,7 @@
 var payment_url = document.location.href
 console.log('payment url: ', payment_url)
 
+
 // function getCookie(name) {
 //   let cookieValue = null;
 //   if (document.cookie && document.cookie !== "") {
@@ -62,6 +63,7 @@ form.addEventListener('submit', function (event) {
   });
 });
 // Any additional form data you want to submit to your backend should be done here, or in another event listener
+
 
 
 

@@ -61,6 +61,9 @@ class Cart():
             self.cart[product_id]['quantity'] = quantity
         self.save()
 
+    def get_subtotal_of_product(self):
+        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+
     def get_subtotal_price(self):
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 

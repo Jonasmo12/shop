@@ -1,3 +1,4 @@
+from itertools import product
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 
@@ -44,7 +45,9 @@ def cart_update(request):
         product_id = int(request.POST.get('product_id'))
         product_quantity = int(request.POST.get('product_quantity'))
         cart.update(product=product_id, quantity=product_quantity)
-
+        
+        qs = cart.get_subtotal_of_product()
+        print(qs)
         cart_quantity = cart.__len__()
         cart_subtotal = cart.get_subtotal_price()
         cart_total_price = cart.get_total_price()

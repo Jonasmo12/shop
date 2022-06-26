@@ -11,23 +11,33 @@
 
 {% include '_navBar.html' %}
 
+<div class="container mt-5">
+    <div class="row">
+        <div class="col p-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=product.shop.slug %}">{{ product.shop }}</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
+                </ol>
+              </nav>
+            
+        </div>
+    </div>
+</div>
 
 <div class="container mt-5">
     <div class="row">
         <div class="col">
-            <div class="row p-3">
-                <img src="{{ product.image.url }}" height="250" />
-            </div>
+            <img style="width: 100%; object-fit: cover;"  src="{{ product.image.url }}" height="250" />
         </div>
-
         <div class="col"> 
-            <div class="row p-3">
-                <h4>{{ product.title }}</h4>
-                <p class="fw-bold">R {{ product.price }}</p>
-                <p>{{ product.description }}</p>
+            <h4>{{ product.title }}</h4>
+            <p>Product description goes here.</p>
+            <p class="fw-bold">R {{ product.price }}</p>
+
+            <div class="row">
                 <div class="col-6">
-                    <label for="select" >Quantity: </label>
-                    <select id="select" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <select style="width: auto;" id="select" class="form-select form-select-sm" aria-label=".form-select-sm example">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -40,22 +50,17 @@
                         <option value="10">10</option>
                     </select>
                 </div>
-                <div class="text-start mt-3">
-<button type="button" id="add-button" value="{{product.id}}" class="btn btn-secondary btn-sm">Add to basket</button></div>
-                </div>
+                <div class="col-6">
+                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-primary btn-sm">Add to Cart</button> 
+                </div>     
+            </div>     
         </div>
     </div>
 </div>
 
 
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col p-3">
-            <a class="fw-light" href="{% url 'shop:shop' shop_slug=product.shop.slug %}">{{ product.shop }}</a>
-        </div>
-    </div>
-</div>
+
 
 <script defer>
     const addButton = document.getElementById('add-button')
