@@ -8,64 +8,99 @@
 </style>
 
 
-<div class="container">
+<div class="container mt-5">
   <div class="row">
     <div class="col">
-      <div class="mt-5">
-        <form id="payment-form mt-5" method="POST" class="row g-3">
-          {% csrf_token %}
-                <div class="col-md-6">
-                  <label for="firstName" class="form-label">First Name:</label>
-                  <input type="text" class="form-control" placeholder="First name" aria-label="First name">
-                </div>
-                <div class="col-md-6">
-                  <label for="flastName" class="form-label">First Name:</label>
-                  <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
-                </div>
-                <div class="col-md-6">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email">
-                </div>
-                <div class="col-md-6">
-                  <label for="tel" class="form-label">Password</label>
-                  <input type="tel" class="form-control" id="tel">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress" class="form-label">Address</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress2" class="form-label">Address 2</label>
-                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputCity" class="form-label">City</label>
-                  <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="col-md-4">
-                  <label for="inputState" class="form-label">State</label>
-                  <input type="text" class="form-control" id="inputState">
-                    
-                </div>
-                <div class="col-md-2">
-                  <label for="inputZip" class="form-label">Zip</label>
-                  <input type="text" class="form-control" id="inputZip">
-                </div>
-                
-              
-                <div class="col-md-6 one-liner mt-5">
-                  <p class="fw-bold">Card Information.</p>
-                  <div id="card-frame">
-                    <!-- Yoco Inline form will be added here -->
-                  </div>
-                  <br>
-                  <button class="btn btn-lg btn-primary" id="pay-button">
-                    Pay <span id="price_confirmation">R{{cart.get_total_price}}</span>
-                  </button>
-                </div>
-                <p class="success-payment-message"></p>
-              </form>
-      </div>
+      <form id="payment-form" method="POST" class="row g-3 needs-validation" novalidate>
+        <div class="col-md-6">
+          <label for="first_name" class="form-label">First name</label>
+          <input type="text" class="form-control" id="first_name" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="last_name" class="form-label">Last name</label>
+          <input type="text" class="form-control" id="last_name" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          
+        </div>
+        <div class="col-md-6">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="tel" class="form-control" id="phone" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          
+        </div>
+        <div class="col-md-4">
+          <label for="address1" class="form-label">Address Line 1</label>
+          <input type="text" class="form-control" id="address1" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          
+        </div>
+        <div class="col-md-4">
+          <label for="address2" class="form-label">Address Line 2</label>
+          <input type="text" class="form-control" id="address2">
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          
+        </div>
+        <div class="col-md-4">
+          <label for="city" class="form-label">City</label>
+          <input type="text" class="form-control" id="city" required>
+          <div class="invalid-feedback">
+            Please provide a valid city.
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="province" class="form-label">Province</label>
+          <select class="form-select" id="province" required>
+            <option selected disabled value="">Choose...</option>
+            <option>Gauteng</option>
+            <option>Limpopo</option>
+            <option>Mpumalanga</option>
+            <option>Kwa-Zulu Natal</option>
+            <option>Eastern Cape</option>
+            <option>Free State</option>
+            <option>North West</option>
+            <option>Northern Cape</option>
+            <option>Western Cape</option>
+          </select>
+          <div class="invalid-feedback">
+            Please select a valid province.
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="zip_code" class="form-label">Zip</label>
+          <input type="text" class="form-control" id="zip_code" required>
+          <div class="invalid-feedback">
+            Please provide a valid zip.
+          </div>
+        </div>
+        
+        <div class="one-liner">
+          <div id="card-frame">
+            <!-- Yoco Inline form will be added here -->
+          </div>
+          <button id="pay-button" class="btn btn-md btn-primary mt-3">
+            Pay R{{ cart.get_total_price }}
+          </button>
+        </div>
+        <p class="success-payment-message" />
+      </form>
     </div>
   </div>
 </div>
@@ -78,8 +113,7 @@
     var cartTotal = cartTotal.toString();
     var cartTotal = cartTotal.replace('.', '');
     var cartTotal = parseInt(cartTotal)
-    var shopInstace = '{{ cart.product.shop }}';
-    console.log(shopInstace)
+    console.log(CSRF_TOKEN)
 
     var order_url = "{% url 'order:add' %}";
 </script>

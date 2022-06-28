@@ -98,12 +98,6 @@
   // {% comment %} Make csrf token availble in JS files {% endcomment %}
     var CSRF_TOKEN = '{{ csrf_token }}';
     var cartTotal = '{{ cart.get_total_price}}';
-    // var cartTotal = cartTotal.toString();
-    // var cartTotal = cartTotal.replace('.', '');
-    // var cartTotal = parseInt(cartTotal)
-    // var shopInstace = '{{ cart.product.shop }}';
-    // console.log(CSRF_TOKEN)
-
     var order_url = "{% url 'order:add' %}";
   
   
@@ -154,5 +148,4 @@
   })
 </script>
 
-<!-- <script src="{% static 'payment.js' %}" data-rel-js></script> -->
 {% endblock %}

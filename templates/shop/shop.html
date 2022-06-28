@@ -23,7 +23,7 @@
 <div class="container mt-5 mb-5">
     <div class="row">
         {% for product in products %}
-        <div class="col-lg-3">
+        <div class="col-lg-3 mb-3">
             <div class="card">
                 <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" class="card-img-top" height="150" alt="...">
                 <div class="card-body">
@@ -39,6 +39,8 @@
               </div>
             
         </div>
+        
+        
         {% endfor %}
     </div>
 </div>

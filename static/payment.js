@@ -26,13 +26,15 @@ var sdk = new window.YocoSDK({
 });
 
 console.log(cartTotal)
-
+console.log(sdk.inline.customer)
 // Create a new dropin form instance
 var inline = sdk.inline({
   layout: 'basic',
   amountInCents: cartTotal,
   currency: 'ZAR',
+  // customer.email: $('#email').val(),
 });
+
 // this ID matches the id of the element we created earlier.
 inline.mount('#card-frame');
 
@@ -65,7 +67,8 @@ form.addEventListener('submit', function (event) {
 // Any additional form data you want to submit to your backend should be done here, or in another event listener
 
 
-
+var first_name = document.getElementById('first_name')
+console.log(first_name)
 
 inline.on('card_tokenized', function (event) {
   // Code to handle the event goes here
@@ -77,7 +80,15 @@ inline.on('card_tokenized', function (event) {
     url: order_url,
     dataType: 'json',
     data: {
-      order_key: 123456789,
+      first_name: $('#first_name').val(),
+      last_name: $('#last_name').val(),
+      email: $('#email').val(),
+      phone: $('#phone').val(),
+      address1: $('#address1').val(),
+      address2: $('#address2').val(),
+      city: $('#city').val(),
+      province: $('#province').val(),
+      post_code: $('#zip_code').val(),
       token_id: event.id,
       csrfmiddlewaretoken: CSRF_TOKEN,
       action: "post",
