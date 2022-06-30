@@ -13,6 +13,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=10)
     email = models.EmailField(null=True)
     post_code = models.CharField(max_length=20)
+    province = models.CharField(max_length=100, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     total_paid = models.FloatField(null=True)
@@ -26,16 +27,16 @@ class Order(models.Model):
         ordering = ('-created',)
     
     def __str__(self):
-        return str(self.created)
+        return f"{self.shop} - {self.created}"
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order,
-                              related_name='items',
-                              on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,
-                                related_name='order_items',
-                                on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        Order, related_name='items', on_delete=models.CASCADE
+    )
+    product = models.ForeignKey(
+        Product, related_name='order_items', on_delete=models.CASCADE
+    )
     price = models.FloatField(null=True)
     quantity = models.PositiveIntegerField(default=1)
 

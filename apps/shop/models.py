@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.utils.text import slugify
 from ..accounts.models import Account
 
-# Create your models here.
 
 class Shop(models.Model):
     owner = models.ForeignKey(

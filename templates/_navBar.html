@@ -9,7 +9,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
               
           </ul>
-          <a type="button" role="button" href="{% url 'cart:cart_summary' %}"
+          <a type="button" role="button" href="{% url 'shop:cart:cart_summary' shop_slug=shop.slug %}"
               class="btn btn-outline-secondary">
 
               {% with total_quantity=cart|length %}

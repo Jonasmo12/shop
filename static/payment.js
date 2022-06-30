@@ -3,21 +3,22 @@ var payment_url = document.location.href
 console.log('payment url: ', payment_url)
 
 
-// function getCookie(name) {
-//   let cookieValue = null;
-//   if (document.cookie && document.cookie !== "") {
-//     const cookies = document.cookie.split(";");
-//     for (let i = 0; i < cookies.length; i++) {
-//       const cookie = cookies[i].trim();
-//       // Does this cookie string begin with the name we want?
-//       if (cookie.substring(0, name.length + 1) === (name + "=")) {
-//         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//         break;
-//       }
-//     }
-//   }
-//   return cookieValue;
-// }
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === (name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
 
 // Replace the supplied `publicKey` with your own.
 // Ensure that in production you use a production public_key.
@@ -25,14 +26,13 @@ var sdk = new window.YocoSDK({
   publicKey: 'pk_test_eacbf366AVOLmKo62094'
 });
 
-console.log(cartTotal)
-console.log(sdk.inline.customer)
+
 // Create a new dropin form instance
 var inline = sdk.inline({
   layout: 'basic',
   amountInCents: cartTotal,
   currency: 'ZAR',
-  // customer.email: $('#email').val(),
+  // description: toString(shop + '* '+ cartTotal),
 });
 
 // this ID matches the id of the element we created earlier.
@@ -67,9 +67,6 @@ form.addEventListener('submit', function (event) {
 // Any additional form data you want to submit to your backend should be done here, or in another event listener
 
 
-var first_name = document.getElementById('first_name')
-console.log(first_name)
-
 inline.on('card_tokenized', function (event) {
   // Code to handle the event goes here
   console.log('post to backend');
@@ -89,62 +86,18 @@ inline.on('card_tokenized', function (event) {
       city: $('#city').val(),
       province: $('#province').val(),
       post_code: $('#zip_code').val(),
+      shop: shop,
       token_id: event.id,
-      csrfmiddlewaretoken: CSRF_TOKEN,
+      csrfmiddlewaretoken: getCookie('csrftoken'),
       action: "post",
     },
     success: function (json) {
       console.log(json.success)
-      window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
+      window.location.replace("http://127.0.0.1:8000/order/confirmation/");
     },
     error: function (xhr, errmsg, err) {},
   })
 });
 
-// form.addEventListener('submit', function (event) {
-//   event.preventDefault()
-  
-//   $.ajax({
-//     type: "POST",
-//     url: 'http://127.0.0.1/order/add',
-//     data: {
-//       csrfmiddlewaretoken: CSRF_TOKEN,
-//       action: "post",
-//     },
-//     success: function (json) {
-//       console.log(json.success)
-  
-//       // stripe.confirmCardPayment(clientsecret, {
-//       //   payment_method: {
-//       //     card: card,
-//       //     billing_details: {
-//       //       address:{
-//       //           line1:custAdd,
-//       //           line2:custAdd2
-//       //       },
-//       //       name: custName
-//       //     },
-//       //   }
-//       // }).then(function(result) {
-//       //   if (result.error) {
-//       //     console.log('payment error')
-//       //     console.log(result.error.message);
-//       //   } else {
-//       //     if (result.paymentIntent.status === 'succeeded') {
-//       //       console.log('payment processed')
-//       //       // There's a risk of the customer closing the window before callback
-//       //       // execution. Set up a webhook or plugin to listen for the
-//       //       // payment_intent.succeeded event that handles any business critical
-//       //       // post-payment actions.
-//       //       window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
-//       //     }
-//       //   }
-//       // });
-  
-//     },
-//     error: function (xhr, errmsg, err) {},
-//   });
-  
-// })
 
 

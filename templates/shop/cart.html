@@ -87,12 +87,17 @@
       <div class="">Amount To Pay: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
     </div>
 
-    <div class="col mb-5 text-end">
-      <a class="btn btn-md btn-primary" href="{% url 'payment:cart' %}">Checkout</a>
-    </div>
+    
   </div>
 </div>
 
+<div class="container">
+  <div class="row g-3">
+    <div class="col-lg-12 mb-5 btn btn-md btn-primary">
+      <a style="color: #fff;" class="" href="{% url 'shop:payment:payment' shop_slug=shop.slug %}">Checkout</a>
+    </div>
+  </div>
+</div>
 
 <script>
   // {% comment %} Make csrf token availble in JS files {% endcomment %}
@@ -107,7 +112,7 @@
     var prodid = $(this).data('index');
     $.ajax({
       type: 'POST',
-      url: '{% url "cart:cart_delete" %}',
+      url: '{% url "shop:cart:cart_delete" shop_slug=shop.slug %}',
       data: {
         product_id: $(this).data('index'),
         csrfmiddlewaretoken: "{{csrf_token}}",
@@ -128,7 +133,7 @@
     var prodid = $(this).data('index');
     $.ajax({
       type: 'POST',
-      url: '{% url "cart:cart_update" %}',
+      url: '{% url "shop:cart:cart_update" shop_slug=shop.slug %}',
       data: {
         product_id: $(this).data('index'),
         product_quantity: $('#select' + prodid + ' option:selected').text(),

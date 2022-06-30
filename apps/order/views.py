@@ -1,10 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
+from django.views.generic import TemplateView, View
 import requests
 from django.conf import settings
 from django.http import JsonResponse
 from ..cart.cart import Cart
 from .models import Order, OrderItem
 from ..shop.models import Shop
+from django.urls import reverse
 
 # Create your views here.
 
@@ -21,11 +23,16 @@ def add(request):
         city = request.POST.get('city')
         province = request.POST.get('province')
         zip_code = request.POST.get('post_code')
+        shop = request.POST.get('shop')
+        shop = Shop.objects.get(name=shop) # get shop instance
+        
+        # remove comma from price
+        # payment menchant wont be able to process the payment
+        # if there is a comma in the ammount 
         cart_total = str(cart.get_total_price())
         cart_total = cart_total.replace('.', '')
         cart_total = int(cart_total)
-
-
+        
         response = requests.post(
             'https://online.yoco.com/v1/charges/',
             headers={
@@ -35,19 +42,17 @@ def add(request):
                 'token': token_id,
                 'amountInCents': cart_total,
                 'currency': 'ZAR',
+                'description': str(shop.name + '* R' + str(cart_total))
             },
         )
-        print("--------")
-        print(response.json())
-        print(response.status_code)
-        print("--------")
-
+        
         if response.status_code == 201:
             # Check if order exists
             if Order.objects.filter(order_id=token_id).exists():
                 pass
             else:
                 order = Order.objects.create(
+                    shop=shop,
                     order_id=token_id,
                     first_name=first_name,
                     last_name=last_name,
@@ -70,20 +75,16 @@ def add(request):
                         quantity=item['quantity']
                     )
 
-            response = JsonResponse({'success': 'Order created successfully'})
-            return response
+            return JsonResponse({'success': 'order created successfully'})
         else:
             response = JsonResponse({'success': response.status_code})
             return response
 
-        
 
+class OrderConfirmation(View):
+    template_name = 'payment/payment_confirmation.html'
 
-def payment_confirmation(data):
-    Order.objects.filter(order_key=data).update(billing_status=True)
-
-
-def user_orders(request):
-    user_id = request.user.id
-    orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
-    return orders
+    def get(self, request, *args, **kwargs):
+        cart = Cart(request)
+        cart.clear()
+        return render(request, self.template_name)

@@ -13,18 +13,20 @@
 
 {% include '_navBar.html' %}
 
-<div class="container-fluid bg-image">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 bg-image">
+            
         </div>
     </div>
 </div>
 
 <div class="container mt-5 mb-5">
+    <p class="fw-bold pb-3">Available Products</p>
     <div class="row">
-        {% for product in products %}
-        <div class="col-lg-3 mb-3">
-            <div class="card">
+        {% for product in page_obj %}
+        <div class="col-lg-3 mb-5">
+            <div class="card border-light">
                 <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" class="card-img-top" height="150" alt="...">
                 <div class="card-body">
                   <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><p class="card-title fw-bold mb-1">{{ product.title }}</p></a>
@@ -32,16 +34,33 @@
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item fw-bold">R {{ product.price }}</li>
-                  <!-- <li class="list-group-item">A second item</li>
-                  <li class="list-group-item">A third item</li> -->
                 </ul>
-                
               </div>
-            
         </div>
-        
-        
         {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        <p class="fw-light" style="font-size: 12px;">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </p>
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -63,15 +82,11 @@
 
 
     .bg-image {
-        background: #404040 center center no-repeat;
+        background: url("{{ shop.background_image.url }}") center center no-repeat;
         background-size: cover;
         position: relative;
         height: 45vh;
     }
 </style>
 
-<script>
-    var shopInstance = '{{ shop.get_absolute_url }}';
-    console.log('shop: ', shopInstance)
-</script>
 {% endblock %}

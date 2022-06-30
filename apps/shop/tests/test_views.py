@@ -3,6 +3,13 @@ from django.urls import reverse
 from ..models import Shop
 
 
+class HomeViewTest(TestCase):
+
+    def test_home_page(self):
+        response = self.client.get(reverse('shop:home'))
+        self.assertTemplateUsed(response, 'home.html')
+
+
 class ShopTest(TestCase):
 
     def setUp(self):

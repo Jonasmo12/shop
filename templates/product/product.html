@@ -25,6 +25,13 @@
     </div>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col text-center" id="flash-message">
+        </div>
+    </div>
+</div>
+
 <div class="container mt-5">
     <div class="row">
         <div class="col">
@@ -65,6 +72,7 @@
 <script defer>
     const addButton = document.getElementById('add-button')
     const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    const flashMessage = document.getElementById('flash-message')
     
 
     $(document).on('click', '#add-button', function (e) {
@@ -72,7 +80,7 @@
         
         $.ajax({
             type: 'POST',
-            url: '{% url "cart:cart_add" %}',
+            url: '{% url "shop:cart:cart_add" shop_slug=product.shop.slug %}',
             data: {
                 product_id: $('#add-button').val(),
                 product_quantity: $('#select option:selected').text(),
@@ -81,6 +89,15 @@
             },
             success: function (json) {
                document.getElementById("cart-quantity").innerHTML = json.quantity
+
+               flashMessage.innerHTML += `
+
+               
+               
+                    <p><strong>{{product.title}}</strong> has been added to the shopping cart</p>
+               
+               `
+
             },
             error: function (xhr, errmsg, err) {}
         });

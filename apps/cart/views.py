@@ -1,19 +1,19 @@
-from itertools import product
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
-
+from ..shop.models import Shop
 from ..product.models import Product
-
 from .cart import Cart
 
 
-def cart_summary(request):
+def cart_summary(request, shop_slug=None):
     cart = Cart(request)
-    return render(request, 'shop/cart.html', {'cart': cart})
+    shop = get_object_or_404(Shop, active=True, slug=shop_slug)
+    return render(request, 'shop/cart.html', {'cart': cart, 'shop': shop})
 
 
-def cart_add(request):
+def cart_add(request, shop_slug=None):
     cart = Cart(request)
+    shop = get_object_or_404(Shop, active=True, slug=shop_slug)
     print(request.POST.get('csrfmiddlewaretoken'))
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('product_id'))
@@ -27,8 +27,9 @@ def cart_add(request):
         return response
 
 
-def cart_delete(request):
+def cart_delete(request, shop_slug=None):
     cart = Cart(request)
+    shop = get_object_or_404(Shop, active=True, slug=shop_slug)
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('product_id'))
         cart.delete(product=product_id)
@@ -39,8 +40,9 @@ def cart_delete(request):
         return response
 
 
-def cart_update(request):
+def cart_update(request, shop_slug=None):
     cart = Cart(request)
+    shop = get_object_or_404(Shop, active=True, slug=shop_slug)
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('product_id'))
         product_quantity = int(request.POST.get('product_quantity'))

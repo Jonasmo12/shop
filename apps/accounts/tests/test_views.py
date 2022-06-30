@@ -18,19 +18,35 @@ class TestLoginView(TestCase):
 		self.user.save()
 
 	def test_response(self):
+		
+		"""
+		test whether the login page is callable.
+		"""
+		
 		response = self.client.get(reverse('accounts:login'))
 		self.assertEquals(response.status_code, 200)
 
 	def test_template_used(self):
+
+		"""
+		Check if the correct template is used
+		"""
 		response = self.client.get(reverse('accounts:login'))
 		self.assertTemplateUsed(response, 'accounts/login.html')
 
 	def test_login(self):
+		"""
+		Test redirect after login
+		"""
 		login = self.client.login(email="Jonny@email.com", password="Thaketse93")
 		response = self.client.post(reverse("accounts:login"))
 		self.assertEquals(response.status_code, 302)
 
 	def test_redirect(self):
+		"""
+		Test whether the correct destination is reached
+		after login
+		"""
 		login = self.client.login(email="Jonny@email.com", password="Thaketse93")
 		response = self.client.post(reverse("accounts:login"), follow=True)
 		self.assertEquals(response.status_code, 200)
@@ -52,11 +68,17 @@ class TestLogout(TestCase):
 		self.user.save()
 
 	def test_logout(self):
+		"""
+		Test redirect after logout
+		"""
 		login = self.client.login(email="Jonny@email.com", password="Thaketse93")
 		response = self.client.post(reverse("accounts:logout"))
 		self.assertEquals(response.status_code, 302)
 
 	def test_redirect(self):
+		"""
+		Test if redirect reaches the correct the destination
+		"""
 		login = self.client.login(email="Jonny@email.com", password="Thaketse93")
 		response = self.client.post(reverse("accounts:logout"), follow=True)
 		self.assertEquals(response.status_code, 200)
