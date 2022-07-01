@@ -4,12 +4,32 @@ from django.utils.text import slugify
 from ..accounts.models import Account
 
 
-class Shop(models.Model):
+class Address(models.Model):
+    address1 = models.CharField('Address Line 1', max_length=255, null=True)
+    address2 = models.CharField('Address Line 2', max_length=255, null=True, blank=True)
+    suburb = models.CharField(max_length=255, null=True)
+    city = models.CharField(max_length=255, null=True)
+    province = models.CharField(max_length=255, null=True)
+    post_code = models.CharField(max_length=255, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class Contact(models.Model):
+    email = models.EmailField(null=True)
+    phone = models.CharField(max_length=10, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class Shop(Address, Contact):
     owner = models.ForeignKey(
         Account, null=True, default="", on_delete=models.CASCADE
     )
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     background_image = models.ImageField(
         upload_to="bg-images/", default="media/bg-images/default.jpg"
     )

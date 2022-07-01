@@ -21,6 +21,9 @@ class ShopTest(TestCase):
     def test_slug(self):
         self.assertEquals(self.shop.slug, "shop-1")
 
+    def test__string_represention(self):
+        self.assertEquals(self.shop.__str__(), 'shop 1')
+
 
 
     
