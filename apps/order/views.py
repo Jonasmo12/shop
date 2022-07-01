@@ -1,14 +1,12 @@
-from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import TemplateView, View
+from django.shortcuts import render
+from django.views.generic import View
 import requests
 from django.conf import settings
 from django.http import JsonResponse
 from ..cart.cart import Cart
 from .models import Order, OrderItem
 from ..shop.models import Shop
-from django.urls import reverse
 
-# Create your views here.
 
 def add(request):
     cart = Cart(request)
@@ -26,9 +24,11 @@ def add(request):
         shop = request.POST.get('shop')
         shop = Shop.objects.get(name=shop) # get shop instance
         
-        # remove comma from price
-        # payment menchant wont be able to process the payment
-        # if there is a comma in the ammount 
+        """
+        remove comma from price
+        payment menchant wont be able to process the payment
+        if there is a comma in the ammount 
+        """
         cart_total = str(cart.get_total_price())
         cart_total = cart_total.replace('.', '')
         cart_total = int(cart_total)
@@ -49,7 +49,8 @@ def add(request):
         if response.status_code == 201:
             # Check if order exists
             if Order.objects.filter(order_id=token_id).exists():
-                pass
+                return JsonResponse({'order_status': 'Order already Exists'})
+
             else:
                 order = Order.objects.create(
                     shop=shop,
@@ -60,6 +61,7 @@ def add(request):
                     address2=address2,
                     post_code=zip_code,
                     city=city,
+                    province=province,
                     phone=phone,
                     email=email,
                     total_paid=cart.get_total_price(),
