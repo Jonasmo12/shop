@@ -1,19 +1,16 @@
 from django.conf import settings
 from django.db import models
 from ..product.models import Product
-from ..shop.models import Shop
+from ..shop.models import (
+    Shop,
+    Address,
+    Contact
+)
 
 
-class Order(models.Model):
+class Order(Address, Contact):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, null=True)
-    address1 = models.CharField(max_length=250)
-    address2 = models.CharField(max_length=250, blank=True)
-    city = models.CharField(max_length=100)
-    phone = models.CharField(max_length=10)
-    email = models.EmailField(null=True)
-    post_code = models.CharField(max_length=20)
-    province = models.CharField(max_length=100, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     total_paid = models.FloatField(null=True)
