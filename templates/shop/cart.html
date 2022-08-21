@@ -23,14 +23,14 @@
 
 
 {% include '_navBar.html' %}
-<div class="container mt-5">
+<div class="container mt-5" style="margin-top: 150px !important;">
   <div class="row">
     <div class="col">
       {% for item in cart %} 
       {% with product=item.product %}
         <div class="row product align-items-center">
           <div class="col-lg-2 col-sm-6 clearfix product-image">
-            <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" height="150"/>
+            <img class="pt-3" style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" height="150"/>
           </div>
           <div class="col-lg-4 col-sm-6-mt-2">
             <p class="fw-bold mb-0">
@@ -84,6 +84,8 @@
       {% endwith %}
       {% endfor %}
     <div class="col mb-3 text-end">
+      <div class="">Shipping Fee: <span class="fw-bold">R </span><div id="shipping_fee" class="d-inline-flex fw-bold"></div></div>
+    
       <div class="">Amount To Pay: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
     </div>
 
@@ -92,9 +94,9 @@
 </div>
 
 <div class="container">
-  <div class="row g-3">
-    <div class="col-lg-12 mb-5 btn btn-md btn-primary">
-      <a style="color: #fff;" class="" href="{% url 'shop:payment:payment' shop_slug=shop.slug %}">Checkout</a>
+  <div class="row">
+    <div class="col mb-5">
+      <a style="color: #fff;" class="w-100 btn btn-md btn-primary" href="{% url 'shop:payment:payment' shop_slug=shop.slug %}">Checkout</a>
     </div>
   </div>
 </div>

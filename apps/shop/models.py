@@ -4,39 +4,50 @@ from django.utils.text import slugify
 from ..accounts.models import Account
 
 
+class BankingInformation(models.Model):
+    name = models.CharField(max_length=255)
+    account_number = models.BigIntegerField()
+    branch_code = models.BigIntegerField()
+    account_type = models.CharField(max_length=255)
+
+    class Meta:
+        abstract = True
+
+
 class Address(models.Model):
-    address1 = models.CharField('Address Line 1', max_length=255, null=True)
-    address2 = models.CharField('Address Line 2', max_length=255, null=True, blank=True)
-    suburb = models.CharField(max_length=255, null=True)
-    city = models.CharField(max_length=255, null=True)
-    province = models.CharField(max_length=255, null=True)
-    post_code = models.CharField(max_length=255, null=True)
+    address1 = models.CharField('Address Line 1', max_length=255)
+    address2 = models.CharField('Address Line 2', max_length=255, blank=True)
+    suburb = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    province = models.CharField(max_length=255)
+    post_code = models.CharField(max_length=255)
 
     class Meta:
         abstract = True
 
 
 class Contact(models.Model):
-    email = models.EmailField(null=True)
-    phone = models.CharField(max_length=10, null=True)
+    email = models.EmailField()
+    phone = models.CharField(
+        max_length=10, help_text="Do not include country code, start with 0"
+    )
 
     class Meta:
         abstract = True
 
 
-class Shop(Address, Contact):
-    owner = models.ForeignKey(
-        Account, null=True, default="", on_delete=models.CASCADE
-    )
+class Shop(Address, Contact, BankingInformation):
+    owner = models.OneToOneField(Account, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True)
     background_image = models.ImageField(
         upload_to="bg-images/", default="media/bg-images/default.jpg"
     )
-    description = models.TextField(default="")
-    tag_line = models.CharField(max_length=255, default="")
+    description = models.TextField()
+    tag_line = models.CharField(max_length=255)
     active = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
+    shipping_fee = models.FloatField(null=True)
 
     class Meta:
         ordering = ['-created_date']

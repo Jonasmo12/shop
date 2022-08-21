@@ -1,22 +1,16 @@
-from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
 from .managers import AccountManager
-import uuid
-from django.urls import reverse
 
 
 class Account(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('Email Address'), unique=True)
-    first_name = models.CharField(max_length=100, verbose_name='First Name')
-    last_name = models.CharField(max_length=100, verbose_name='Last Name')
+    email = models.EmailField('Email Address', unique=True)
+    first_name = models.CharField('First Name', max_length=100)
+    last_name = models.CharField('Last Name', max_length=100)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    is_student = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(default=timezone.now)
+    date_joined = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

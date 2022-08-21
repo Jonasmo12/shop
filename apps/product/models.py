@@ -10,8 +10,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/')
     in_stock = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
-    shop = models.ForeignKey(Shop, on_delete=models.SET_NULL, null=True, default="")
-    slug = models.SlugField(null=True, unique=True)
+    shop = models.ForeignKey(Shop, on_delete=models.SET_NULL, null=True)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         ordering = ("-created_date",)

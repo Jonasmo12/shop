@@ -6,6 +6,7 @@ from ..shop.models import (
     Address,
     Contact
 )
+from .utils import randomOrderNumber
 
 
 class Order(Address, Contact):
@@ -14,7 +15,9 @@ class Order(Address, Contact):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     total_paid = models.FloatField(null=True)
-    order_id = models.CharField(max_length=200)
+    order_id = models.BigIntegerField(
+        default=randomOrderNumber, unique=True, null=False
+    )
     complete = models.BooleanField(default=False)
     shop = models.ForeignKey(
         Shop, on_delete=models.SET_NULL, null=True
