@@ -14,7 +14,7 @@
   <div class="row">
       <div class="col p-3">
           <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
+              <ol class="breadcrumb mt-5">
                 <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=shop.slug %}">{{ shop }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Payment</li>
               </ol>
@@ -58,7 +58,7 @@
           </div>
           
         </div>
-        <div class="col-md-4">
+        <div class="col-md-12">
           <label for="address1" class="form-label">Address Line 1</label>
           <input type="text" class="form-control" id="address1" required>
           <div class="valid-feedback">
@@ -66,7 +66,7 @@
           </div>
           
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="address2" class="form-label">Address Line 2</label>
           <input type="text" class="form-control" id="address2">
           <div class="valid-feedback">
@@ -74,7 +74,7 @@
           </div>
           
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="city" class="form-label">City</label>
           <input type="text" class="form-control" id="city" required>
           <div class="invalid-feedback">
@@ -106,16 +106,8 @@
             Please provide a valid zip.
           </div>
         </div>
-        
-        <div class="one-liner">
-          <div id="card-frame">
-            <!-- Yoco Inline form will be added here -->
-          </div>
-          <button id="pay-button" class="btn btn-md btn-primary mt-3">
-            Pay R{{ cart.get_total_price }}
-          </button>
-        </div>
         <p class="success-payment-message"></p>
+
       </form>
     </div>
   </div>

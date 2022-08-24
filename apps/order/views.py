@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from ..cart.cart import Cart
 from .models import Order, OrderItem
 from ..shop.models import Shop
+from .utils import randomOrderNumber
 
 
 class CreateOrderView(View):
@@ -40,57 +41,40 @@ class CreateOrderView(View):
             cart_total = cart_total.replace('.', '')
             cart_total = int(cart_total)
             
-            """
-            A charge link for payment processing.
-            """
-            response = requests.post(
-                'https://online.yoco.com/v1/charges/',
-                headers={
-                    'X-Auth-Secret-Key': settings.YOCO_SECRET_KEY,
-                },
-                json={
-                    'token': token_id,
-                    'amountInCents': cart_total,
-                    'currency': 'ZAR',
-                    'description': str(shop.name + '* R' + str(cart_total))
-                },
-            )
             
-            if response.status_code == 201:
-                # Check if order exists
-                if Order.objects.filter(order_id=token_id).exists():
-                    return JsonResponse({'order_status': 'Order already Exists'})
+            # if Order.objects.filter(order_id=randomOrderNumber).exists():
+            #     return JsonResponse({'order_status': 'Order already Exists'})
 
-                else:
-                    order = Order.objects.create(
-                        shop=shop,
-                        #order_id=token_id,
-                        first_name=first_name,
-                        last_name=last_name,
-                        address1=address1,
-                        address2=address2,
-                        post_code=post_code,
-                        city=city,
-                        province=province,
-                        phone=phone,
-                        email=email,
-                        total_paid=cart.get_total_price(),
-                        complete=True
-                    )
-                    order_id = order
+        
+            order = Order.objects.create(
+                shop=shop,
+                order_id=randomOrderNumber,
+                first_name=first_name,
+                last_name=last_name,
+                address1=address1,
+                address2=address2,
+                post_code=post_code,
+                city=city,
+                province=province,
+                phone=phone,
+                email=email,
+                total_paid=cart.get_total_price(),
+                complete=False
+            )
+            order_id = order
 
-                    for item in cart:
-                        OrderItem.objects.create(
-                            order=order_id, 
-                            product=item['product'], 
-                            price=item['price'], 
-                            quantity=item['quantity']
-                        )
+            for item in cart:
+                OrderItem.objects.create(
+                    order=order_id, 
+                    product=item['product'], 
+                    price=item['price'], 
+                    quantity=item['quantity']
+                )
 
-                return JsonResponse({'success': 'order created successfully'})
-            else:
-                response = JsonResponse({'success': response.status_code})
-                return response
+            return JsonResponse({'success': 'order created successfully'})
+        else:
+            response = JsonResponse({'success': response.status_code})
+            return response
 
 
 class OrderConfirmation(View):
