@@ -46,6 +46,7 @@
             <p class="fw-light product-description" style="font-size: 12px;">
               This is where the description of the product goes.
             </p>
+            <p style="font-size: 10px; font-weight: bold;">R{{ product.price }}</p>
           </div>
 
           <div class="col col-lg-2 col-sm-6 text-center">
@@ -87,7 +88,7 @@
     <div class="col mb-3 text-end">
       <div class="">Shipping Fee: <span class="fw-bold">R </span><div id="shipping_fee" class="d-inline-flex fw-bold">{{ shop.shipping_fee }}</div></div>
     
-      <div class="">Amount To Pay: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart.get_subtotal_price}}</div></div>
+      <div class="">Amount To Pay: <span class="fw-bold">R </span><div id="subtotal" class="d-inline-flex fw-bold">{{cart_shipping_fee}}</div></div>
     </div>
 
     

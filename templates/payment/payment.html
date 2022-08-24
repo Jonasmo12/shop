@@ -1,11 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Payment{% endblock %}
+{% block title %}Shipping Information{% endblock %}
 {% block content %}
 
-<style>
-  
-</style>
 
 {% include '_navBar.html' %}
 
@@ -16,7 +13,7 @@
           <nav aria-label="breadcrumb">
               <ol class="breadcrumb mt-5">
                 <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=shop.slug %}">{{ shop }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Payment</li>
+                <li class="breadcrumb-item active" aria-current="page">Shipping Information</li>
               </ol>
             </nav>
       </div>

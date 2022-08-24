@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from decimal import Decimal
 from django.shortcuts import get_object_or_404, render
 from ..shop.models import Shop
 from ..product.models import Product
@@ -8,7 +9,15 @@ from .cart import Cart
 def cart_summary(request, shop_slug=None):
     cart = Cart(request)
     shop = get_object_or_404(Shop, active=True, slug=shop_slug)
-    return render(request, 'shop/cart.html', {'cart': cart, 'shop': shop})
+
+    # add shipping fee to cart
+    cart_shipping_fee = cart.get_subtotal_of_product() + Decimal(shop.shipping_fee)
+    context = {
+        'cart': cart,
+        'shop': shop,
+        'cart_shipping_fee': cart_shipping_fee
+    }
+    return render(request, 'shop/cart.html', context)
 
 
 def cart_add(request, shop_slug=None):
@@ -51,12 +60,11 @@ def cart_update(request, shop_slug=None):
         qs = cart.get_subtotal_of_product()
         print(qs)
         cart_quantity = cart.__len__()
-        cart_subtotal = cart.get_subtotal_price()
+        cart_subtotal = cart.get_subtotal_price() + Decimal(shop.shipping_fee)
         cart_total_price = cart.get_total_price()
         response = JsonResponse({
             'cart_quantity': cart_quantity, 
             'subtotal': cart_subtotal,
             'total_price': cart_total_price
         })
-        print(response)
         return response
