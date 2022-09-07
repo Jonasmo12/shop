@@ -4,6 +4,15 @@ body, html {
     font-family: 'Lato', sans-serif !important;
 }
 
+/* Color Theme Swatches in Hex
+.Luxury-watches-shop.-1-hex { color: #011126; }
+.Luxury-watches-shop.-2-hex { color: #0DF205; }
+.Luxury-watches-shop.-3-hex { color: #F29F05; }
+.Luxury-watches-shop.-4-hex { color: #A69D8D; }
+.Luxury-watches-shop.-5-hex { color: #D9AE79; } */
+
+
+
 a {
     text-decoration: none !important;
     color: #011126 !important;
@@ -16,4 +25,23 @@ a:hover {
 
 .btn {
     border-radius: 0px !important;
+}
+
+.btn-outline-danger {
+    /* background-color: #F29F05 !important; */
+    border-color: #F29F05 !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #F29F05 !important;
+    border-color: #F29F05 !important;
+    color: #011126 !important;
+}
+
+.form-control {
+    border-radius: 0px !important;
+}
+
+.not-visible {
+    display: none;
 }

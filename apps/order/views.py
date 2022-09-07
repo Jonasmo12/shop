@@ -58,17 +58,23 @@ class CreateOrderView(View):
                 total_paid=cart.get_total_price(),
                 complete=False
             )
-            order_id = order
+            
 
             for item in cart:
                 OrderItem.objects.create(
-                    order=order_id, 
+                    order=order, 
                     product=item['product'], 
                     price=item['price'], 
                     quantity=item['quantity']
                 )
 
-            return JsonResponse({'success': 'order created successfully'})
+            # qs = []
+            # for i in order:
+            #     qs.append({
+            #         'order_id': i.order_id
+            #     })
+
+            return JsonResponse({'order': order.order_id})
         else:
             response = JsonResponse({'success': response.status_code})
             return response

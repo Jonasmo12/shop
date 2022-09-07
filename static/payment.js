@@ -41,9 +41,10 @@ $("#payment-form").submit(function (e){
       csrfmiddlewaretoken: getCookie('csrftoken'),
       action: "post",
     },
-    success: function (json) {
-      console.log(json.success)
-      window.location.replace("http://127.0.0.1:8000/order/confirmation/");
+    success: function (response) {
+      console.log(response.order)
+      // window.location.replace("http://127.0.0.1:8000/order/confirmation/");
+
     },
     error: function (xhr, errmsg, err) {},
   })
