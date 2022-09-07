@@ -7,7 +7,7 @@
 {% include '_navBar.html' %}
 
 
-<div class="container mt-5">
+<div class="container-fluid mt-5">
   <div class="row">
       <div class="col p-3">
           <nav aria-label="breadcrumb">
@@ -23,97 +23,99 @@
 
 <div class="container mt-5 mb-5">
   <div class="row">
-    <div class="col">
+    <div class="col-lg-12">
       <form id="payment-form" method="POST" validate>
         {% csrf_token %}
-        <div class="col-md-6">
-          <label for="first_name" class="form-label">First name</label>
-          <input type="text" class="form-control" id="first_name" required>
-          <div class="valid-feedback">
-            Looks good!
+        <div class="row gy-3">
+          <div class="col-md-6">
+            <label for="first_name" class="form-label">First Name:</label>
+            <input type="text" class="form-control" id="first_name" required>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <label for="last_name" class="form-label">Last name</label>
-          <input type="text" class="form-control" id="last_name" required>
-          <div class="valid-feedback">
-            Looks good!
+          <div class="col-md-6">
+            <label for="last_name" class="form-label">Last Name:</label>
+            <input type="text" class="form-control" id="last_name" required>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" required>
-          <div class="valid-feedback">
-            Looks good!
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" required>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            
           </div>
-          
-        </div>
-        <div class="col-md-6">
-          <label for="phone" class="form-label">Phone</label>
-          <input type="tel" class="form-control" id="phone" required>
-          <div class="valid-feedback">
-            Looks good!
+          <div class="col-md-6">
+            <label for="phone" class="form-label">Phone:</label>
+            <input type="tel" class="form-control" id="phone" required>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            
           </div>
-          
-        </div>
-        <div class="col-md-12">
-          <label for="address1" class="form-label">Address Line 1</label>
-          <input type="text" class="form-control" id="address1" required>
-          <div class="valid-feedback">
-            Looks good!
+          <div class="col-md-12">
+            <label for="address1" class="form-label">Address Line 1:</label>
+            <input type="text" class="form-control" id="address1" required>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            
           </div>
-          
-        </div>
-        <div class="col-md-6">
-          <label for="address2" class="form-label">Address Line 2</label>
-          <input type="text" class="form-control" id="address2">
-          <div class="valid-feedback">
-            Looks good!
+          <div class="col-md-6">
+            <label for="address2" class="form-label">Address Line 2:</label>
+            <input type="text" class="form-control" id="address2">
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            
           </div>
-          
-        </div>
-        <div class="col-md-6">
-          <label for="city" class="form-label">City</label>
-          <input type="text" class="form-control" id="city" required>
-          <div class="invalid-feedback">
-            Please provide a valid city.
+          <div class="col-md-6">
+            <label for="city" class="form-label">City:</label>
+            <input type="text" class="form-control" id="city" required>
+            <div class="invalid-feedback">
+              Please provide a valid city.
+            </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <label for="province" class="form-label">Province</label>
-          <select class="form-select" id="province" required>
-            <option selected disabled value="">Choose...</option>
-            <option>Gauteng</option>
-            <option>Limpopo</option>
-            <option>Mpumalanga</option>
-            <option>Kwa-Zulu Natal</option>
-            <option>Eastern Cape</option>
-            <option>Free State</option>
-            <option>North West</option>
-            <option>Northern Cape</option>
-            <option>Western Cape</option>
-          </select>
-          <div class="invalid-feedback">
-            Please select a valid province.
+          <div class="col-md-3">
+            <label for="province" class="form-label">Province:</label>
+            <select class="form-select" id="province" required>
+              <option selected disabled value="">Choose...</option>
+              <option>Gauteng</option>
+              <option>Limpopo</option>
+              <option>Mpumalanga</option>
+              <option>Kwa-Zulu Natal</option>
+              <option>Eastern Cape</option>
+              <option>Free State</option>
+              <option>North West</option>
+              <option>Northern Cape</option>
+              <option>Western Cape</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid province.
+            </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <label for="zip_code" class="form-label">Zip</label>
-          <input type="text" class="form-control" id="zip_code" required>
-          <div class="invalid-feedback">
-            Please provide a valid zip.
+          <div class="col-md-3">
+            <label for="zip_code" class="form-label">Zip Code:</label>
+            <input type="text" class="form-control" id="zip_code" required>
+            <div class="invalid-feedback">
+              Please provide a valid zip.
+            </div>
           </div>
         </div>
 
-        <button type="submit" id="order-button" class="btn btn-md btn-primary mt-5">
+        <button type="submit" id="order-button" class="btn btn-md btn-outline-primary mt-5">
           Place Order R{{ cart.get_total_price }}
         </button>
-        <p class="success-payment-message"></p>
-
+        
       </form>
     </div>
   </div>
 </div>
+
 
 <div class="container">
   <div class="row">

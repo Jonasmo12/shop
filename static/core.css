@@ -6,6 +6,12 @@ body, html {
 
 a {
     text-decoration: none !important;
+    color: #011126 !important;
+}
+
+a:hover {
+    color: #0DF205 !important;
+    transition: 0.3s;
 }
 
 .btn {

@@ -38,7 +38,7 @@
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12 col-xsm-12 col-xxsm-12"> 
             <p class="fw-bold pt-lg-0 pt-md-3 pt-sm-3 pt-xsm-3 pt-xxsm-3">{{ product.title | upper }}</p>
-            <p class="fw-light">{{ product.description }}.</p>
+            <p class="fw-lighter lh-1">{{ product.description }}.</p>
             <p class="s">R{{ product.price }}</p>
 
             <div class="row">
@@ -75,15 +75,15 @@
     </div>
 </div>
 <div class="container mt-5 mb-5">
-    <p class="lead">You might also like</p>
+    <p class="lead">You might also like.</p>
     <div class="row">
         {% for product in page_obj %}
         <div class="col-lg-3 mb-5">
             <div class="card border-light">
                 <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" class="card-img-top" height="150" alt="...">
                 <div class="card-body">
-                  <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><p class="card-title fw-bold mb-1">{{ product.title | upper }}</p></a>
-                  <p class="card-text fw-light" style="font-size: 12px;">{{ product.description | slice:":15"}}</p>
+                  <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><p class="card-title mb-1">{{ product.title | upper }}</p></a>
+                  <p class="card-text fw-lighter lh-1" style="font-size: 12px;">{{ product.description | slice:":15"}}</p>
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">R{{ product.price }}</li>

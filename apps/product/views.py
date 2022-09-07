@@ -15,7 +15,8 @@ class ProductDetailView(View):
         product = get_object_or_404(
             Product, slug=product_slug, in_stock=True, shop=shop
         )
-        tag = Product.objects.filter(tag__name=product.tag)
+        # filters objects by tag name, and excludes opened product from alike products
+        tag = Product.objects.filter(tag__name=product.tag).exclude(title=product.title)
         paginator = Paginator(tag, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
