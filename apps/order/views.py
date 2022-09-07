@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from django.views.generic import View
-import requests
-from django.conf import settings
 from django.http import JsonResponse
 from ..cart.cart import Cart
 from .models import Order, OrderItem
@@ -48,7 +46,7 @@ class CreateOrderView(View):
         
             order = Order.objects.create(
                 shop=shop,
-                order_id=randomOrderNumber,
+                order_id=randomOrderNumber(),
                 first_name=first_name,
                 last_name=last_name,
                 address1=address1,

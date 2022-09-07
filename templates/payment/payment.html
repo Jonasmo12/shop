@@ -21,10 +21,11 @@
 </div>
 
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
   <div class="row">
     <div class="col">
-      <form id="payment-form" method="POST" class="row g-3 needs-validation" novalidate>
+      <form id="payment-form" method="POST" validate>
+        {% csrf_token %}
         <div class="col-md-6">
           <label for="first_name" class="form-label">First name</label>
           <input type="text" class="form-control" id="first_name" required>
@@ -103,6 +104,10 @@
             Please provide a valid zip.
           </div>
         </div>
+
+        <button type="submit" id="order-button" class="btn btn-md btn-primary mt-5">
+          Place Order R{{ cart.get_total_price }}
+        </button>
         <p class="success-payment-message"></p>
 
       </form>
@@ -110,6 +115,15 @@
   </div>
 </div>
 
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <p class="">We only offer Electronic Fund Transfer <strong>(EFT)</strong> at the moment, <br><br>Thank you.</p>
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}
 
 <script>
     // {% comment %} Make csrf token availble in JS files {% endcomment %}

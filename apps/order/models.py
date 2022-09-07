@@ -16,7 +16,7 @@ class Order(Address, Contact):
     updated = models.DateTimeField(auto_now=True)
     total_paid = models.FloatField(null=True)
     order_id = models.BigIntegerField(
-        default=None, unique=True, null=False
+        default=None, unique=True, null=False, editable=False
     )
     complete = models.BooleanField(default=False)
     shop = models.ForeignKey(
