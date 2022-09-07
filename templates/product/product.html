@@ -16,8 +16,8 @@
         <div class="col p-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=product.shop.slug %}">{{ product.shop }}</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
+                  <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=product.shop.slug %}"><strong>{{ product.shop }}</strong></a></li>
+                  <li class="breadcrumb-item active" aria-current="page"><strong>{{ product.title }}</strong></li>
                 </ol>
               </nav>
         </div>
@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row">
         <div class="col-lg-6 col-md-12 col-sm-12 col-xsm-12 col-xxsm-12">
             <img style="width: 100%; object-fit: cover;"  src="{{ product.image.url }}" height="250" />
@@ -68,9 +68,54 @@
     </div>
 </div>
 
-
-
-
+<div class="container mt-5">
+    
+    <div class="row">
+        <div class="col-lg-4"></div>
+    </div>
+</div>
+<div class="container mt-5 mb-5">
+    <p class="lead">You might also like</p>
+    <div class="row">
+        {% for product in page_obj %}
+        <div class="col-lg-3 mb-5">
+            <div class="card border-light">
+                <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" class="card-img-top" height="150" alt="...">
+                <div class="card-body">
+                  <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><p class="card-title fw-bold mb-1">{{ product.title }}</p></a>
+                  <p class="card-text fw-light" style="font-size: 12px;">Product description goes here.</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item fw-bold">R {{ product.price }}</li>
+                </ul>
+              </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        <p class="fw-light" style="font-size: 12px;">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </p>
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script defer>
     const addButton = document.getElementById('add-button')
