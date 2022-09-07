@@ -1,6 +1,47 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white border-bottom fixed-top">
+<style>
+    .subNav {
+        background-color: #222222 !important;
+        color: #fff;
+    }
+
+    .subNav a:hover {
+        color: lightcyan;
+    }
+
+    #myNav {
+        transition: 0.4s;
+        background: #fff;
+        height: 90px;
+    }
+</style>
+
+<script type="text/javascript">
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+            document.getElementById("myNav").classList.add("fixed-top");
+            document.getElementById("myNav").style.padding = "10px 3px";
+            document.getElementById("myNav").style.height = "60px";
+        } else {
+            document.getElementById("myNav").classList.remove("fixed-top");
+            document.getElementById("myNav").style.padding = "30px 10px";
+            document.getElementById("myNav").style.height = "90px";
+        }
+    }
+</script>
+
+<div class="container-fluid subNav">
+    <div class="row">
+        <div class="col-lg-6">Support</div>
+        <div class="col-lg-6 text-end">Chat</div>
+    </div>
+</div>
+
+
+<nav id="myNav" class="navbar navbar-expand-md navbar-light bg-white">
   <div class="container-fluid">
-      <a class="navbar-brand" href="/">{{ shop.name }}</a>
+      <a id="logo" class="navbar-brand" href="/">{{ shop.name }}</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
           aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

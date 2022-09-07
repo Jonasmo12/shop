@@ -23,7 +23,22 @@
 
 
 {% include '_navBar.html' %}
-<div class="container mt-5" style="margin-top: 150px !important;">
+
+<div class="container mt-5">
+  <div class="row">
+      <div class="col p-3">
+          <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=shop.slug %}">{{ shop.name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+              </ol>
+            </nav>
+      </div>
+  </div>
+</div>
+
+
+<div id="cartContainer" class="container mt-5" style="margin-top: 150px !important;">
   <div class="row">
     <div class="col">
       {% for item in cart %} 
@@ -43,10 +58,7 @@
                 {{ product.shop }}
               </a>
             </p>
-            <p class="fw-light product-description" style="font-size: 12px;">
-              This is where the description of the product goes.
-            </p>
-            <p style="font-size: 10px; font-weight: bold;">R{{ product.price }}</p>
+            <p style="font-size: 12px; font-weight: bold;">R{{ product.price }}</p>
           </div>
 
           <div class="col col-lg-2 col-sm-6 text-center">
@@ -123,9 +135,11 @@
         action: 'post'
       },
       success: function (json) {
+        window.location.reload(true);
         $('.product-item[data-index="' + prodid + '"]').remove();
         document.getElementById("subtotal").innerHTML = json.subtotal;
-        document.getElementById("cart-quantity").innerHTML = json.cart-quantity
+        document.getElementById("cart-quantity").innerHTML = json.cart-quantity;
+        
       },
       error: function (xhr, errmsg, err) {}
     });

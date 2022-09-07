@@ -4,40 +4,10 @@ body, html {
     font-family: 'Lato', sans-serif !important;
 }
 
-#myNav {
-    transition: 0.4s;
-    background: #fff !important;
-    /* height: 60px !important; */
-} 
-
-.navbar-light .navbar-toggler {
-    color: rgba(0,0,0,.55);
-    border-color: rgba(0,0,0,.1);
-    border-radius: 0px !important;
-}
-
-
 a {
     text-decoration: none !important;
 }
 
-a:hover {
-    color: #364959 !important;
-}
-
- 
-
-.not-visible {
-    display: none;
-}
-
-.nav-link {
-    color: #364959 !important;
-}
-
-.bg {
-    background: url('images/1.jpg') center center no-repeat;
-    background-size: cover;
-    height: 40vh;
-    position: relative;
+.btn {
+    border-radius: 0px !important;
 }

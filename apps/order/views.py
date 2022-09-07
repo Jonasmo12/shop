@@ -12,7 +12,6 @@ class CreateOrderView(View):
     def post(self, request, *args, **kwargs):
         cart = Cart(request)
         if request.POST.get('action') == 'post':
-            token_id = request.POST.get('token_id')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             email = request.POST.get('email')
