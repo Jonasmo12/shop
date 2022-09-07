@@ -77,7 +77,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+USE_THOUSAND_SEPARATOR = True
+NUMBER_GROUPING = (3, 2, 0)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Password validation

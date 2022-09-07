@@ -11,13 +11,13 @@
 
 {% include '_navBar.html' %}
 
-<div class="container mt-5">
+<div class="container-fluid mt-5">
     <div class="row">
         <div class="col p-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=product.shop.slug %}"><strong>{{ product.shop }}</strong></a></li>
-                  <li class="breadcrumb-item active" aria-current="page"><strong>{{ product.title }}</strong></li>
+                  <li class="breadcrumb-item fw-bold"><a class="fw-light" href="{% url 'shop:shop' shop_slug=product.shop.slug %}"><strong>{{ product.shop | upper }}</strong></a></li>
+                  <li class="breadcrumb-item active fw-bold" aria-current="page"><strong>{{ product.title | upper }}</strong></li>
                 </ol>
               </nav>
         </div>
@@ -26,7 +26,7 @@
 
 <div class="container">
     <div class="row">
-        <div style="color: #1497ff;" class="col text-center" id="flash-message">
+        <div style="color: #0C0D0A;" class="col text-center" id="flash-message">
         </div>
     </div>
 </div>
@@ -37,9 +37,9 @@
             <img style="width: 100%; object-fit: cover;"  src="{{ product.image.url }}" height="250" />
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12 col-xsm-12 col-xxsm-12"> 
-            <h4 class="pt-lg-0 pt-md-3 pt-sm-3 pt-xsm-3 pt-xxsm-3">{{ product.title }}</h4>
-            <p>Product description goes here.</p>
-            <p class="fw-bold">R {{ product.price }}</p>
+            <p class="fw-bold pt-lg-0 pt-md-3 pt-sm-3 pt-xsm-3 pt-xxsm-3">{{ product.title | upper }}</p>
+            <p class="fw-light">{{ product.description }}.</p>
+            <p class="s">R{{ product.price }}</p>
 
             <div class="row">
                 <div class="col-6">
@@ -82,11 +82,11 @@
             <div class="card border-light">
                 <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" class="card-img-top" height="150" alt="...">
                 <div class="card-body">
-                  <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><p class="card-title fw-bold mb-1">{{ product.title }}</p></a>
-                  <p class="card-text fw-light" style="font-size: 12px;">Product description goes here.</p>
+                  <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><p class="card-title fw-bold mb-1">{{ product.title | upper }}</p></a>
+                  <p class="card-text fw-light" style="font-size: 12px;">{{ product.description | slice:":15"}}</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item fw-bold">R {{ product.price }}</li>
+                  <li class="list-group-item">R{{ product.price }}</li>
                 </ul>
               </div>
         </div>
