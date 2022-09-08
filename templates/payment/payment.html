@@ -117,7 +117,7 @@
         </div>
 
         <button type="submit" id="order-button" class="btn btn-md btn-outline-primary mt-5">
-          Place Order R{{ cart.get_total_price }}
+          Place Order R{{ cart_total }}
         </button>
         
       </form>
@@ -128,25 +128,6 @@
   </div>
 </div>
 
-<div id="shop-information" class="container not-visible">
-  <div class="row">
-    <div class="col-lg-6">
-      <p class="lead">Shop Information.</p>
-      <p>
-        Name: {{ shop.name }}. <br>
-        Address: {{ shop.address1}}, {{ shop.address2 }}, {{shop.suburb }}, {{shop.city}}, {{shop.provinvce}}, {{shop.post_code}}. <br>
-        Phone: <a href="">{{shop.phone}}</a>. <br>
-        Email: <a href="mailto:{{shop.email}}">{{ shop.email }}</a>
-      </p>
-    </div>
-    <div class="col-lg-6">
-      <p class="lead">Banking Details.</p>
-      <p>
-
-      </p>
-    </div>
-  </div>
-</div>
 
 <div id="eft-alert" class="container">
   <div class="row">
@@ -156,7 +137,9 @@
   </div>
 </div>
 
+
 {% include 'footer.html' %}
+
 
 <style>
   .btn-outline-primary {
@@ -179,11 +162,6 @@
     var cartTotal = cartTotal.replace('.', '');
     var cartTotal = parseInt(cartTotal)
     var shop = '{{shop}}'
-    console.log(shop)
-
-    var orderConfirmatonUrl = "{% url 'order:order_confirmation' %}"
-    console.log(orderConfirmatonUrl)
-
     var order_url = "{% url 'order:add' %}";
 </script>
 

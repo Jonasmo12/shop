@@ -1,7 +1,4 @@
 //'use strict';
-var payment_url = document.location.href
-console.log('payment url: ', payment_url)
-
 
 function getCookie(name) {
   let cookieValue = null;
@@ -47,11 +44,10 @@ $("#payment-form").submit(function (e){
       action: "post",
     },
     success: function (response) {
-      console.log(response.order)
-      // window.location.replace("http://127.0.0.1:8000/order/confirmation/");
       paymentForm.classList.add("not-visible");
       eftAlert.classList.add("not-visible");
       breadCrumb.classList.add("not-visible");
+      document.getElementById("cart-quantity").innerHTML = response.cart_quantity;
       
       
       orderConfirmation.innerHTML += `
@@ -70,7 +66,7 @@ $("#payment-form").submit(function (e){
 
         <p class="fw-lighter mt-3">Please note your order will be deleted automatically after 2 days if no payment is made, <br><br> Thank you.</p>
       `
-      document.getElementById("cart-quantity").innerHTML = response.cart_quantity;
+      
       
     },
     error: function (xhr, errmsg, err) {},

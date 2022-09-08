@@ -1,4 +1,6 @@
 import random
+from .models import Order
 
 def randomOrderNumber():
-    return int(random.randint(1000000000, 9999999999))
+    order_number = int(random.randint(1000000000, 9999999999))  
+    return order_number

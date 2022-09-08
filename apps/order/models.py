@@ -1,12 +1,7 @@
 from django.conf import settings
 from django.db import models
 from ..product.models import Product
-from ..shop.models import (
-    Shop,
-    Address,
-    Contact
-)
-from .utils import randomOrderNumber
+from ..shop.models import Shop, Address, Contact
 
 
 class Order(Address, Contact):

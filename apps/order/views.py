@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View
+from decimal import Decimal
 from django.http import JsonResponse
 from ..cart.cart import Cart
 from .models import Order, OrderItem
@@ -28,15 +29,7 @@ class CreateOrderView(View):
             correct shop.
             """
             shop = Shop.objects.get(name=shop) # get shop instance
-            
-            """
-            remove comma from price
-            payment menchant wont be able to process the payment
-            if there is a comma in the ammount 
-            """
-            cart_total = str(cart.get_total_price())
-            cart_total = cart_total.replace('.', '')
-            cart_total = int(cart_total)
+            cart_total = cart.get_total_price() + Decimal(shop.shipping_fee)
             
             order = Order.objects.create(
                 shop=shop,
@@ -50,7 +43,7 @@ class CreateOrderView(View):
                 province=province,
                 phone=phone,
                 email=email,
-                total_paid=cart.get_total_price(),
+                total_paid=cart_total,
                 complete=False
             )
             
@@ -63,23 +56,15 @@ class CreateOrderView(View):
                 )
 
             cart.clear()
-            cart_quantity = cart.__len__()
+            cart_quantity = cart.__len__() * 0 # set cart quantity to zero
+
             return JsonResponse({
                 'order': order.order_id, 
                 'total': order.total_paid, 
                 'date': order.created.strftime("%Y-%m-%d %H:%M:%S"),
-
                 'cart_quantity': cart_quantity
             })
         else:
             response = JsonResponse({'success': response.status_code})
             return response
 
-
-class OrderConfirmation(View):
-    template_name = 'payment/payment_confirmation.html'
-
-    def get(self, request, *args, **kwargs):
-        cart = Cart(request)
-        cart.clear()
-        return render(request, self.template_name)
