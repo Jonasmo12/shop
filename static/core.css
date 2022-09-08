@@ -38,6 +38,16 @@ a:hover {
     color: #011126 !important;
 }
 
+.btn-outline-secondary {
+    border-color: #A69D8D !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #A69D8D !important;
+    border-color: #A69D8D !important;
+    color: #011126 !important;
+}
+
 .form-control {
     border-radius: 0px !important;
 }

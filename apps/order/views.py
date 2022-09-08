@@ -38,11 +38,6 @@ class CreateOrderView(View):
             cart_total = cart_total.replace('.', '')
             cart_total = int(cart_total)
             
-            
-            # if Order.objects.filter(order_id=randomOrderNumber).exists():
-            #     return JsonResponse({'order_status': 'Order already Exists'})
-
-        
             order = Order.objects.create(
                 shop=shop,
                 order_id=randomOrderNumber(),
@@ -59,7 +54,6 @@ class CreateOrderView(View):
                 complete=False
             )
             
-
             for item in cart:
                 OrderItem.objects.create(
                     order=order, 
@@ -68,13 +62,15 @@ class CreateOrderView(View):
                     quantity=item['quantity']
                 )
 
-            # qs = []
-            # for i in order:
-            #     qs.append({
-            #         'order_id': i.order_id
-            #     })
+            cart.clear()
+            cart_quantity = cart.__len__()
+            return JsonResponse({
+                'order': order.order_id, 
+                'total': order.total_paid, 
+                'date': order.created.strftime("%Y-%m-%d %H:%M:%S"),
 
-            return JsonResponse({'order': order.order_id})
+                'cart_quantity': cart_quantity
+            })
         else:
             response = JsonResponse({'success': response.status_code})
             return response

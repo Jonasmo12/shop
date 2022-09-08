@@ -30,16 +30,24 @@
       <div class="col p-3">
           <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=shop.slug %}">{{ shop.name }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                <li class="breadcrumb-item"><a class="fw-light" href="{% url 'shop:shop' shop_slug=shop.slug %}">{{ shop.name | upper }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">SHOPPING CART</li>
               </ol>
             </nav>
       </div>
   </div>
 </div>
 
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <a style="color: #fff;" class="w-100 btn btn-md btn-outline-primary" href="{% url 'shop:shop' shop_slug=shop.slug %}">Continue Shopping</a>
+    </div>
+  </div>
+</div>
 
-<div id="cartContainer" class="container mt-5 mb-5" style="margin-top: 150px !important;">
+
+<div id="cartContainer" class="container mt-5 mb-5">
   <div class="row">
     <div class="col">
       {% for item in cart %} 
