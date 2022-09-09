@@ -16,25 +16,40 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12 bg-image">
-            <h4 class="tag-line mb-0">{{ shop.tag_line | title }}</h4>
-            <p class="fw-light mt-0" style="color: #fff; text-align:center;">{{ shop.description }}</p>
+            <h4 class="tag-line mb-0">
+                {{ shop.tag_line | title }}
+            </h4>
+            <p class="fw-light mt-0" style="color: #fff; text-align:center;">
+                {{ shop.description }}
+            </p>
         </div>
     </div>
 </div>
 
+
 <div class="container mt-5 mb-5">
-    <p class="lead pb-3">Available Products.</p>
+    <p class="lead pb-3">
+        Available Products.
+    </p>
     <div class="row">
         {% for product in page_obj %}
         <div class="col-lg-3 mb-5">
             <div class="card border-light">
                 <img style="width: 100%; object-fit: cover;" src="{{ product.image.url }}" class="card-img-top" height="150" alt="...">
                 <div class="card-body">
-                  <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}"><p class="card-title mb-1">{{ product.title | upper }}</p></a>
-                  <p class="card-text fw-light lh-1" style="font-size: 12px;">{{ product.description | slice:":15"}}</p>
+                    <a href="{% url 'shop:product:product' shop_slug=shop.slug product_slug=product.slug %}">
+                        <p class="card-title mb-1">
+                            {{ product.title | upper }}
+                        </p>
+                    </a>
+                    <p class="card-text fw-light lh-1" style="font-size: 12px;">
+                        {{ product.description | slice:":15"}}
+                    </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item">R{{ product.price }}</li>
+                    <li class="list-group-item">
+                        R{{ product.price }}
+                    </li>
                 </ul>
               </div>
         </div>
