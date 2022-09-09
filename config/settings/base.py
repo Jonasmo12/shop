@@ -1,6 +1,6 @@
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 import os
-from django.core.management.utils import get_random_secret_key
 import sys
 import dj_database_url
 
