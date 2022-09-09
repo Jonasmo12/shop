@@ -6,7 +6,7 @@
 
 {% block title %}
 
-{{ shop.name }}
+{{ shop.name }} | {{ shop.description }}
 
 {% endblock title %}
 {% block content %}
@@ -16,13 +16,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12 bg-image">
-            <h4 class="tag-line">{{ shop.tag_line | title }}</h4>
+            <h4 class="tag-line mb-0">{{ shop.tag_line | title }}</h4>
+            <p class="fw-light mt-0" style="color: #fff; text-align:center;">{{ shop.description }}</p>
         </div>
     </div>
 </div>
 
 <div class="container mt-5 mb-5">
-    <p class="lead pb-3">Available Products</p>
+    <p class="lead pb-3">Available Products.</p>
     <div class="row">
         {% for product in page_obj %}
         <div class="col-lg-3 mb-5">
@@ -44,19 +45,19 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        <a class="fw-lighter" href="?page=1">&laquo; first</a>
+                        <a class="fw-lighter" href="?page={{ page_obj.previous_page_number }}">previous</a>
                     {% endif %}
             
                     <span class="current">
-                        <p class="fw-light" style="font-size: 12px;">
+                        <p class="fw-lighter" style="font-size: 12px;">
                             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                         </p>
                     </span>
             
                     {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}">next</a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        <a class="fw-lighter" href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a class="fw-lighter" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
                     {% endif %}
                 </span>
             </div>
@@ -64,23 +65,54 @@
     </div>
 </div>
 
+<div id="shop-information" class="container-fluid">
+<div class="container">
+    <div class="row">
+        <p class="lead pt-5 fw-bold">
+            Shop Information.
+        </p>
+        <div class="col-lg-6 pb-5">
+            <p class="" style="font-size: 12px;">
+                <b>Trading Name:</b> {{ shop.name | upper }} <br>
+                <b>Owner:</b> {{ shop.owner }} <br>
+                
+            </p>
+        </div>
+        <div class="col-lg-6 text-end">
+            <p class="" style="font-size: 12px;">
+                <b>Phone:</b> <a href="tel:{{shop.phone}}">{{shop.phone}}</a> <br>
+                <b>Email:</b> <a href="mail:{{shop.email}}">{{shop.email}}</a> <br>
+                <b>Address:</b> {{ shop.address1 }}, {{shop.address2}}, <br>{{shop.city}},<br> {{shop.province}},<br> {{shop.zip_code}}. <br>
 
+            </p>
+        </div>
+    </div>
+</div>
+</div>
+
+{% include "footer.html" %}
 
 <style>
 
     .bg-image {
-        background: url("{{ shop.background_image.url }}") center center no-repeat;
+        background:  linear-gradient(rgb(1, 17, 38, 0.616), rgba(1, 17, 38, 0.616)),url("{{ shop.background_image.url }}") center center no-repeat;
         background-size: cover;
         position: relative;
-        height: 45vh;
+        height: 250px;
     }
 
     .tag-line {
-        color: #fff;
-        margin-top: 150px;
+        color: #F29F05;
         text-align: center;
-        opacity: 0px 1px;
+        padding-top: 100px;
+        
     }
+
+    #shop-information {
+        background: #F29F05;
+        color: #fff;
+    }
+
 </style>
 
 {% endblock %}
