@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'apps.cart.apps.CartConfig',
     'apps.order.apps.OrderConfig',
     'apps.payment.apps.PaymentConfig',
-
+    'storages',
     
 ]
 
@@ -130,13 +130,29 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = BASE_DIR / 'static',
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-TEMPLATE_DIRS = BASE_DIR / 'templates',
+# USE_SPACES = os.getenv('USE_SPACES') == 'TRUE'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
+# if USE_SPACES:
+#     # settings
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_ENDPOINT_URL = 'https://nyc3.digitaloceanspaces.com'
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+# static settings
+AWS_LOCATION = 'static'
+STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_LOCATION}/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+# STATIC_URL = 'static/'
+# STATICFILES_DIRS = BASE_DIR / 'static',
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+# TEMPLATE_DIRS = BASE_DIR / 'templates',
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
