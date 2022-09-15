@@ -76,6 +76,13 @@ AUTH_USER_MODEL = 'accounts.Account'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+# }
+
 if DEVELOPMENT_MODE is True:
     DATABASES = {
         'default': {
@@ -83,7 +90,7 @@ if DEVELOPMENT_MODE is True:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif len(sys.argv) > 0 and sys.argsv[1] != 'collectstatic':
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
     if os.getenv("DATABASE_URL", None) is None:
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
